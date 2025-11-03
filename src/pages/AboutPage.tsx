@@ -458,26 +458,54 @@ const AboutPage = () => {
           </div>
 
           {/* Mentor */}
-          <div className="max-w-4xl mx-auto mb-12 sm:mb-16">
-            <div className="bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl p-1">
-              <div className="bg-white rounded-2xl p-6 sm:p-8">
-                <div className="flex flex-col md:flex-row items-center gap-6">
-                  <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-purple-400 to-pink-400 rounded-full flex items-center justify-center shadow-2xl flex-shrink-0">
-                    <span className="text-4xl sm:text-5xl">👨‍🏫</span>
-                  </div>
-                  <div className="text-center md:text-left">
-                    <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
-                      Phan Gia Hoàng
-                    </h3>
-                    <p className="text-lg sm:text-xl text-purple-600 font-semibold mb-3">
-                      Giảng viên hướng dẫn
-                    </p>
-                    <p className="text-sm sm:text-base text-gray-600 leading-relaxed text-pretty">
-                      Người thầy đã truyền cảm hứng và định hướng cho dự án
-                      GrowMate từ những ngày đầu tiên
-                    </p>
+          <div className="max-w-6xl mx-auto mb-12 sm:mb-16">
+            <div className="grid md:grid-cols-2 gap-6">
+              {/* Mentor 1 */}
+              <div className="bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl p-1">
+                <div className="bg-white rounded-2xl p-6 sm:p-8">
+                  <div className="flex flex-col md:flex-row items-center gap-6">
+                    <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-purple-400 to-pink-400 rounded-full flex items-center justify-center shadow-2xl flex-shrink-0">
+                      <span className="text-4xl sm:text-5xl">👨‍🏫</span>
+                    </div>
+                    <div className="text-center md:text-left">
+                      <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+                        Phan Gia Hoàng
+                      </h3>
+                      <p className="text-lg sm:text-xl text-purple-600 font-semibold mb-3">
+                        Giảng viên hướng dẫn
+                      </p>
+                      <p className="text-sm sm:text-base text-gray-600 leading-relaxed text-pretty">
+                        Người thầy đã truyền cảm hứng và định hướng cho dự án
+                        GrowMate
+                      </p>
+                    </div>
                   </div>
                 </div>
+              </div>
+
+              {/* Mentor 2 */}
+              <div className="bg-gradient-to-r from-indigo-500 to-sky-500 rounded-2xl p-1">
+                <div className="bg-white rounded-2xl p-6 sm:p-8">
+                  <div className="flex flex-col md:flex-row items-center gap-6">
+                    <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-indigo-400 to-sky-400 rounded-full flex items-center justify-center shadow-2xl flex-shrink-0">
+                      <span className="text-4xl sm:text-5xl">👨‍🏫</span>
+                    </div>
+                    <div className="text-center md:text-left">
+                      <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+                        Nguyễn Phương Duy
+                      </h3>
+                      <p className="text-lg sm:text-xl text-indigo-600 font-semibold mb-3">
+                        Mentor hướng dẫn
+                      </p>
+                      <p className="text-sm sm:text-base text-gray-600 leading-relaxed text-pretty">
+                        Đồng hành cố vấn và định hướng chuyên môn cho đội ngũ
+                        GrowMate từ những ngày đầu tiên và trong suốt quá trình phát triển.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                {/* Bottom accent to match Mentor 1 card */}
+                <div className="h-2 w-full bg-gradient-to-r from-indigo-500 to-sky-500 rounded-b-2xl"></div>
               </div>
             </div>
           </div>

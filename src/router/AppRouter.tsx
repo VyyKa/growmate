@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom"
+import RouteLoaderOverlay from "../components/RouteLoaderOverlay"
 import MainLayout from "../layouts/MainLayout"
 import FarmerLayout from "../layouts/FarmerLayout"
 import AdminLayout from "../layouts/AdminLayout"
@@ -39,6 +40,7 @@ import { UserRole } from "../types/enums/UserRole"
 export default function AppRouter() {
   return (
     <BrowserRouter>
+      <RouteLoaderOverlay />
       <Routes>
         <Route path="/" element={<MainLayout />}>
           <Route index element={<Homepage />} />

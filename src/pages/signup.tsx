@@ -8,6 +8,7 @@ import EmailVerification from "../components/EmailVerification"
 import Logo from "../assets/Logo.png"
 import { signup as signupApi } from "../services/API/authAPI"
 import GoogleLoginButton from "../components/GoogleLoginButton"
+import LoadingButton from "../components/LoadingButton"
 import getErrorMessage from "../hooks/getErrorMessage.ts"
 import { signupSchema } from "../types/schemas/authValidation.ts"
 
@@ -17,7 +18,6 @@ const Signup = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
   const [errors, setErrors] = useState<
     Partial<
       Record<
@@ -66,8 +66,6 @@ const Signup = () => {
       toast.error(first?.message || "Dữ liệu không hợp lệ")
       return
     }
-
-    setIsLoading(true)
     try {
       await signupApi(fullName, email, password)
 
@@ -79,7 +77,6 @@ const Signup = () => {
       console.error("Signup failed:", error)
       toast.error(getErrorMessage(error, "Đăng ký thất bại. Vui lòng thử lại."))
     } finally {
-      setIsLoading(false)
     }
   }
 
@@ -221,13 +218,13 @@ const Signup = () => {
                 </div>
 
                 {/* Signup button */}
-                <button
-                  onClick={handleSignup}
-                  disabled={isLoading}
-                  className="w-full bg-green-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+                <LoadingButton
+                  className="w-full !bg-main !border-main hover:!bg-green-700 !text-white"
+                  onClickAsync={handleSignup}
+                  loadingText="Đang đăng ký..."
                 >
-                  {isLoading ? "Đang đăng ký..." : "Đăng ký"}
-                </button>
+                  Đăng ký
+                </LoadingButton>
 
                 {/* Login link */}
                 <div className="text-center mt-6">

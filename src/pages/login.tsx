@@ -10,6 +10,7 @@ import Logo from "../assets/Logo.png"
 import { login as loginApi } from "../services/API/authAPI"
 import { setAuthToken } from "../services/axiosClient.ts"
 import GoogleLoginButton from "../components/GoogleLoginButton"
+import LoadingButton from "../components/LoadingButton"
 import type { LoginPayload } from "../types/apiResponse/authResponse.ts"
 import getErrorMessage from "../hooks/getErrorMessage.ts"
 import { loginSchema } from "../types/schemas/authValidation.ts"
@@ -20,7 +21,6 @@ const Login = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [rememberMe, setRememberMe] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
   const [errors, setErrors] = useState<
     Partial<{ email: string; password: string }>
   >({})
@@ -51,8 +51,6 @@ const Login = () => {
       toast.error(first?.message || "Dữ liệu không hợp lệ")
       return
     }
-
-    setIsLoading(true)
     try {
       const res = await loginApi(email, password)
       const data = res.data as { data?: LoginPayload } & Partial<LoginPayload>
@@ -80,7 +78,6 @@ const Login = () => {
         getErrorMessage(error, "Đăng nhập thất bại. Vui lòng thử lại.")
       )
     } finally {
-      setIsLoading(false)
     }
   }
 
@@ -182,13 +179,13 @@ const Login = () => {
             </div>
 
             {/* Login button */}
-            <button
-              onClick={handleLogin}
-              disabled={isLoading}
-              className="w-full bg-main text-white py-3 px-4 rounded-lg font-medium hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 cursor-pointer"
+            <LoadingButton
+              className="w-full !bg-main !border-main hover:!bg-green-700 !text-white"
+              onClickAsync={handleLogin}
+              loadingText="Đang đăng nhập..."
             >
-              {isLoading ? "Đang đăng nhập..." : "Đăng nhập"}
-            </button>
+              Đăng nhập
+            </LoadingButton>
 
             {/* Sign up link */}
             <div className="text-center mt-6">

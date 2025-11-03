@@ -4,9 +4,9 @@ const Footer = () => {
   const exploreLinks = [
     { name: "Trang chủ", path: "/" },
     { name: "Giới thiệu", path: "/about" },
-    { name: "Cửa hàng", path: "/shop" },
+    { name: "Cửa hàng", path: "/products" },
     { name: "Nhận nuôi", path: "/adopt" },
-    { name: "Tin tức", path: "/news" },
+    { name: "Tin tức", path: "/blog" },
     { name: "Liên hệ", path: "/contact" },
     { name: "Chính sách và điều khoản", path: "/policy" },
   ]
