@@ -15,6 +15,7 @@ import productPots from "../assets/icons/productPot.png"
 import productIrrigation from "../assets/icons/productWateringCan.png"
 import { PRODUCT_PAGE_SIZE } from "../utils/constants/globalConstants"
 import { getProductImageUrl } from "../services/cloudinary/transformations"
+import heroProduct from "../assets/imgs/product1.jpg"
 
 type CategoryTab = "all" | "tools" | "fertilizer" | "pots" | "irrigation"
 
@@ -128,7 +129,7 @@ const Product = () => {
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{
-            backgroundImage: "url('/src/assets/imgs/product1.jpg')",
+            backgroundImage: `url(${heroProduct})`,
           }}
         >
           {/* Dark gradient overlay for better text readability */}

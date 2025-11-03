@@ -8,6 +8,8 @@ import { getPosts } from "../services/API/postAPI"
 import type { PostItem } from "../types/apiResponse/postResponse"
 import useClientSearchPagination from "../hooks/useClientSearchPagination"
 import { getAdoptImageUrl } from "../services/cloudinary/transformations"
+import adoptHero from "../assets/imgs/adopt1.png"
+import adoptHeroBg from "../assets/imgs/adoptHeroBackground.png"
 
 type TabKey = "featured" | "gardens" | "2025"
 
@@ -66,7 +68,7 @@ const Adopt = () => {
       <section
         className="relative min-h-[450px] md:min-h-[500px] lg:h-[550px] bg-cover bg-center overflow-hidden"
         style={{
-          backgroundImage: `url('/src/assets/imgs/adoptHeroBackground.png')`,
+          backgroundImage: `url(${adoptHeroBg})`,
         }}
       >
         {/* Gradient overlay for better depth and text readability */}
@@ -117,7 +119,7 @@ const Adopt = () => {
                 {/* Image container with improved styling */}
                 <div className="relative w-[300px] h-[250px] lg:w-[360px] lg:h-[300px] xl:w-[400px] xl:h-[330px] rounded-2xl overflow-hidden shadow-2xl border-4 border-white/20 backdrop-blur-sm transform hover:scale-105 transition-transform duration-300">
                   <img
-                    src="/src/assets/imgs/adopt1.png"
+                    src={adoptHero}
                     alt="Farmer working with plants"
                     className="w-full h-full object-cover"
                   />
