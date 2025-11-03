@@ -1,5 +1,4 @@
 import { Button, type ButtonProps } from "antd"
-import { useMemo } from "react"
 import { useAsyncAction, type AsyncFunction } from "../hooks/useAsyncAction"
 
 type LoadingButtonProps = ButtonProps & {
