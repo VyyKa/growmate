@@ -1,0 +1,89 @@
+
+@theme {
+    /* color */
+    --color-main: #08A045;  
+}
+
+button{
+    @apply cursor-pointer;
+}
+
+.no-pointer-events {
+    pointer-events: none;
+}
+
+/* Line clamp utilities */
+.line-clamp-2 {
+    display: -webkit-box;
+    line-clamp: 2;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.line-clamp-3 {
+    display: -webkit-box;
+    line-clamp: 3;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Blog background animations */
+@keyframes backgroundShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.blog-hero-bg {
+    animation: backgroundShift 20s ease-in-out infinite;
+}
+
+/* Parallax effect for blog backgrounds */
+.blog-parallax {
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+@media (max-width: 768px) {
+    .blog-parallax {
+        background-attachment: scroll;
+    }
+}
+
+/* Ant Design DatePicker customization */
+.ant-picker-dropdown .ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner,
+.ant-picker-dropdown .ant-picker-cell-in-view.ant-picker-cell-range-start .ant-picker-cell-inner,
+.ant-picker-dropdown .ant-picker-cell-in-view.ant-picker-cell-range-end .ant-picker-cell-inner {
+    background: #08A045 !important;
+}
+
+.ant-picker-dropdown .ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner::before {
+    border-color: #08A045 !important;
+}
+
+.ant-picker-dropdown .ant-picker-cell-in-view.ant-picker-cell-range-hover:not(.ant-picker-cell-selected):not(.ant-picker-cell-range-start):not(.ant-picker-cell-range-end) .ant-picker-cell-inner,
+.ant-picker-dropdown .ant-picker-cell-in-view.ant-picker-cell-in-range::before {
+    background: rgba(8, 160, 69, 0.1) !important;
+}
+
+.ant-picker-dropdown .ant-picker-header-view button:hover {
+    color: #08A045 !important;
+}
+
+.ant-picker-dropdown .ant-picker-today-btn {
+    color: #08A045 !important;
+}
+
+.ant-picker-dropdown .ant-picker-today-btn:hover {
+    color: #067534 !important;
+}

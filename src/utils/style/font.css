@@ -1,0 +1,8 @@
+@font-face {
+    font-family: 'GreatVibes';
+    src: url("../assets/fonts/GreatVibes-Regular.ttf") format('truetype');
+}
+
+@theme {
+        --font-family: 'GreatVibes', cursive;
+}

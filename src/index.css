@@ -1,0 +1,5 @@
+@import "tailwindcss";
+@import "./utils/style/animation.css";
+@import "./utils/style/font.css";
+@import "./utils/style/globalStyle.css";
+
