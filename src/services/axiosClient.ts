@@ -3,7 +3,9 @@ import axios from 'axios';
 let authToken: string | undefined = undefined;
 // Export the API base URL so other modules (e.g., OAuth button) can build absolute URLs for full-page redirects
 // export const API_BASE_URL = 'https://localhost:7283/api';
-export const API_BASE_URL = 'https://growmate.azurewebsites.net/api';
+//export const API_BASE_URL = 'https://growmate.azurewebsites.net/api';
+// Prefer env at build time; fall back to production URL
+export const API_BASE_URL = (import.meta as any)?.env?.VITE_API_BASE_URL ?? 'https://growmate.azurewebsites.net/api';
 
 export const setAuthToken = (token?: string) => {
   authToken = token;
