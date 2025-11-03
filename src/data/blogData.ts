@@ -11,13 +11,18 @@ export interface BlogPost {
   readTime: string
 }
 
+// Import images so Vite handles them in build (works on Vercel)
+import homeBlog1 from "../assets/imgs/homeBlog1.png"
+import homeBlog2 from "../assets/imgs/homeBlog2.png"
+import homeBlog3 from "../assets/imgs/homeBlog3.png"
+
 export const blogData: BlogPost[] = [
   {
     id: "top-5-fruits-2025",
     title: "Top 5 loại trái cây ăn quả nổi bật năm 2025",
     date: "01 July 2025",
     author: "Hồ Khá",
-    image: "/src/assets/imgs/homeBlog1.png",
+    image: homeBlog1,
     category: "news",
     tags: ["trái cây", "xu hướng", "2025", "nông sản"],
     readTime: "5 phút",
@@ -49,7 +54,7 @@ export const blogData: BlogPost[] = [
     title: "Làm thế nào để chăm sóc cây ăn quả trong mùa hè?",
     date: "05 July 2025",
     author: "Hồ Khá",
-    image: "/src/assets/imgs/homeBlog2.png",
+    image: homeBlog2,
     category: "tips",
     tags: ["chăm sóc", "mùa hè", "cây ăn quả", "kỹ thuật"],
     readTime: "7 phút",
@@ -82,7 +87,7 @@ export const blogData: BlogPost[] = [
     title: "Hành trình GrowMate: Kết nối nông dân và người tiêu dùng",
     date: "10 July 2025",
     author: "Hồ Khá",
-    image: "/src/assets/imgs/homeBlog3.png",
+    image: homeBlog3,
     category: "news",
     tags: ["GrowMate", "nông nghiệp", "kết nối", "công nghệ"],
     readTime: "6 phút",
@@ -111,7 +116,7 @@ export const blogData: BlogPost[] = [
     title: "Xu hướng tiêu dùng nông sản sạch năm 2025",
     date: "15 July 2025",
     author: "Ngọc Minh",
-    image: "/src/assets/imgs/homeBlog1.png",
+    image: homeBlog1,
     category: "news",
     tags: ["nông sản sạch", "xu hướng", "tiêu dùng", "2025"],
     readTime: "8 phút",
@@ -145,7 +150,7 @@ export const blogData: BlogPost[] = [
     title: "Bí quyết bảo quản trái cây tươi lâu tại nhà",
     date: "18 July 2025",
     author: "Thanh Hằng",
-    image: "/src/assets/imgs/homeBlog2.png",
+    image: homeBlog2,
     category: "tips",
     tags: ["bảo quản", "trái cây", "mẹo vặt", "tươi lâu"],
     readTime: "6 phút",
@@ -180,7 +185,7 @@ export const blogData: BlogPost[] = [
     title: "Vai trò của công nghệ trong nông nghiệp hiện đại",
     date: "20 July 2025",
     author: "Hữu Phước",
-    image: "/src/assets/imgs/homeBlog3.png",
+    image: homeBlog3,
     category: "technology",
     tags: ["công nghệ", "nông nghiệp", "IoT", "AI", "hiện đại"],
     readTime: "10 phút",
@@ -214,7 +219,7 @@ export const blogData: BlogPost[] = [
     title: "Làm vườn hữu cơ: Hướng dẫn cơ bản cho người mới bắt đầu",
     date: "22 July 2025",
     author: "Minh Tuấn",
-    image: "/src/assets/imgs/homeBlog1.png",
+    image: homeBlog1,
     category: "gardening",
     tags: ["làm vườn", "hữu cơ", "cơ bản", "hướng dẫn"],
     readTime: "12 phút",
@@ -253,7 +258,7 @@ export const blogData: BlogPost[] = [
     title: "Nông nghiệp thẳng đứng: Tương lai của canh tác đô thị",
     date: "25 July 2025",
     author: "Lan Anh",
-    image: "/src/assets/imgs/homeBlog2.png",
+    image: homeBlog2,
     category: "technology",
     tags: ["nông nghiệp thẳng đứng", "đô thị", "tương lai", "LED"],
     readTime: "9 phút",
@@ -291,7 +296,7 @@ export const blogData: BlogPost[] = [
     title: "Lịch trồng trọt theo mùa: Hướng dẫn chi tiết cho từng tháng",
     date: "28 July 2025",
     author: "Văn Đức",
-    image: "/src/assets/imgs/homeBlog3.png",
+    image: homeBlog3,
     category: "gardening",
     tags: ["lịch trồng", "mùa vụ", "hướng dẫn", "theo tháng"],
     readTime: "11 phút",
