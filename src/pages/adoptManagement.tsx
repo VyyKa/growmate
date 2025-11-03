@@ -42,8 +42,8 @@ export default function AdoptManagement() {
         pageSize: pageSize,
       })
 
-      // Support both shapes: envelope or plain paged
-      const raw: unknown = response.data
+      // getAdoptions already normalizes envelope/plain responses and returns AdoptionPaged
+      const raw: unknown = response
 
       const isPaged = (obj: unknown): obj is AdoptionPaged => {
         return (

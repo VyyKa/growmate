@@ -1,4 +1,4 @@
-import type { PostStatus } from "../../enums/PostStatus"
+import type { ListingStatus as PostStatus } from "../../enums/ListingStatus"
 import type { UnitEnum } from "../../enums/UnitEnum"
 
 /** Bảng posts */

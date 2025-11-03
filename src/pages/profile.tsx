@@ -90,7 +90,7 @@ const ProfilePage = () => {
         email: formData.email,
         profileImageUrl: formData.profileImageUrl || undefined,
       })
-      setSuccessMessage(res.data?.message || "Cập nhật thông tin thành công!")
+      setSuccessMessage(res?.message || "Cập nhật thông tin thành công!")
     } catch (error) {
       const errorMsg = getErrorMessage(error)
       setErrors({ form: errorMsg })

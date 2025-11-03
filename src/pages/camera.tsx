@@ -23,9 +23,9 @@ export default function CameraPage() {
       setError(null)
 
       try {
-        const response = await getAdoptionById(Number(id))
-        if (response.data.success && response.data.data) {
-          setAdoption(response.data.data)
+        const data = await getAdoptionById(Number(id))
+        if (data) {
+          setAdoption(data)
         } else {
           setError("Không tìm thấy thông tin cây nhận nuôi")
         }
