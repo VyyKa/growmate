@@ -1,4 +1,4 @@
-import Logo from "../assets/logo.png"
+import Logo from "../assets/Logo.png"
 import LoginButton from "./LoginButton"
 import AvatarDropdown from "./AvatarDropdown"
 import ContactButton from "./ContactButton"
