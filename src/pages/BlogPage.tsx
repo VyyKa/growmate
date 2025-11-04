@@ -73,22 +73,24 @@ const BlogPage = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
             <div className="max-w-3xl">
               {/* Badge */}
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-md rounded-full text-white text-sm font-medium border border-white/20 mb-6 shadow-lg">
-                <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
-                <span>Kiến thức nông nghiệp hữu ích</span>
+              <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-white/10 backdrop-blur-md rounded-full text-white text-xs sm:text-sm font-medium border border-white/20 mb-4 sm:mb-6 shadow-lg">
+                <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-white rounded-full animate-pulse"></span>
+                <span className="hidden sm:inline">
+                  Kiến thức nông nghiệp hữu ích
+                </span>
+                <span className="sm:hidden">Kiến thức hữu ích</span>
               </div>
 
               {/* Main Title */}
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 tracking-tight leading-tight">
-                Tin Tức
-                <br />
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-4 sm:mb-6 tracking-tight leading-tight">
+                <span className="block">Tin Tức</span>
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-300 via-green-200 to-emerald-200">
                   Nông Nghiệp
                 </span>
               </h1>
 
               {/* Description */}
-              <p className="text-lg md:text-xl text-gray-200 mb-8 max-w-2xl leading-relaxed">
+              <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-200 mb-6 sm:mb-8 max-w-2xl leading-relaxed">
                 Khám phá những bài viết mới nhất về cây trồng, kỹ thuật nông nghiệp và xu hướng tiêu dùng nông sản sạch
               </p>
             </div>
@@ -99,7 +101,7 @@ const BlogPage = () => {
       {/* Category Tabs */}
       <section className="bg-white sticky top-0 z-20 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex gap-2 scrollbar-hide py-4">
+          <div className="flex gap-2 sm:gap-3 overflow-x-auto scrollbar-hide py-4 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
             {categories.map((cat) => (
               <button
                 key={cat.key}
@@ -108,7 +110,7 @@ const BlogPage = () => {
                   setSearchQuery("")
                   setCurrentPage(1)
                 }}
-                className={`px-6 py-2.5 rounded-lg font-semibold text-sm whitespace-nowrap transition-all duration-200 cursor-pointer ${
+                className={`px-4 sm:px-6 py-2.5 rounded-lg font-semibold text-xs sm:text-sm whitespace-nowrap transition-all duration-200 cursor-pointer flex-shrink-0 ${
                   activeCategory === cat.key
                     ? "bg-main text-white shadow-md shadow-main/30 scale-105"
                     : "bg-gray-100 text-gray-700 hover:bg-gray-200"
@@ -150,16 +152,16 @@ const BlogPage = () => {
         {currentBlogs.length > 0 ? (
           <>
             {/* Results header */}
-            <div className="flex items-center justify-between mb-8">
-              <h2 className="text-2xl font-bold text-gray-800">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 mb-6 sm:mb-8">
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-800">
                 {activeCategory === "all" ? "Tất Cả Bài Viết" : categories.find(c => c.key === activeCategory)?.label}
               </h2>
-              <p className="text-sm text-gray-500">
+              <p className="text-xs sm:text-sm text-gray-500 whitespace-nowrap">
                 Hiển thị {currentBlogs.length} trên {filteredBlogs.length} bài viết
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
               {currentBlogs.map((blog) => (
                 <BlogBox
                   key={blog.id}

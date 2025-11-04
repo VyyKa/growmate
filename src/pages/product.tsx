@@ -174,7 +174,7 @@ const Product = () => {
       {/* Category Tabs */}
       <section className="bg-white sticky top-0 z-20 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex gap-2 scrollbar-hide py-4">
+          <div className="flex gap-2 sm:gap-3 overflow-x-auto scrollbar-hide py-4 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
             {categories.map((cat) => (
               <button
                 key={cat.key}
@@ -183,14 +183,29 @@ const Product = () => {
                   handleSearchChange("")
                   handlePageChange(1)
                 }}
-                className={`flex items-center gap-2 px-5 py-2.5 rounded-lg font-semibold text-sm whitespace-nowrap transition-all duration-200 cursor-pointer ${
+                className={`flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-lg font-semibold text-xs sm:text-sm whitespace-nowrap transition-all duration-200 cursor-pointer flex-shrink-0 ${
                   activeCategory === cat.key
                     ? "bg-main text-white shadow-md shadow-main/30 scale-105"
                     : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                 }`}
               >
-                <img src={cat.icon} alt={cat.label} className="w-10 h-10" />
-                <span>{cat.label}</span>
+                <img
+                  src={cat.icon}
+                  alt={cat.label}
+                  className="w-8 h-8 sm:w-10 sm:h-10 flex-shrink-0"
+                />
+                <span className="hidden sm:inline">{cat.label}</span>
+                <span className="sm:hidden">
+                  {cat.key === "all"
+                    ? "Tất cả"
+                    : cat.key === "tools"
+                      ? "Dụng cụ"
+                      : cat.key === "fertilizer"
+                        ? "Phân bón"
+                        : cat.key === "pots"
+                          ? "Chậu"
+                          : "Tưới"}
+                </span>
               </button>
             ))}
           </div>

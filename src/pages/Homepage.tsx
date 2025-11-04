@@ -26,7 +26,7 @@ const Homepage = () => {
   const listFeatures = [
     "Lựa chọn cây yêu thích từ nhiều nông trại uy tín",
     "Theo dõi quá trình phát triển qua camera trực tiếp",
-    "Nhận trọn vẻn mùa vụ khi cây đến kỳ thu hoạch",
+    "Nhận trọn vẹn mùa vụ khi cây đến kỳ thu hoạch",
   ]
 
   const advantageCards = [
@@ -101,35 +101,37 @@ const Homepage = () => {
     <div className="min-h-screen">
       {/* Hero Section */}
       <div
-        className="relative bg-cover bg-center h-[500px] md:h-[600px] w-full flex flex-col items-start text-left text-white"
+        className="relative bg-cover bg-center h-[400px] sm:h-[500px] md:h-[600px] lg:h-[700px] w-full flex flex-col items-start justify-start text-left text-white px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16"
         style={{ backgroundImage: `url(${home1})` }}
       >
-        <div className="relative z-10 px-2 max-w-4xl mx-32 mt-32">
-          <h2 className="text-sm md:text-base mb-4 font-normal tracking-wide uppercase">
+        {/* Overlay for better text readability */}
+        <div className="absolute inset-0 bg-black/20"></div>
+        <div className="relative z-10 max-w-4xl pt-16 sm:pt-20 md:pt-24 lg:pt-32">
+          <h2 className="text-sm sm:text-base md:text-lg mb-3 sm:mb-4 font-normal tracking-wide uppercase">
             CHÀO MỪNG ĐẾN VỚI DỰ ÁN
           </h2>
-          <div className="flex items-center justify-center gap-4 mb-6">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
             <h1
-              className="text-5xl md:text-7xl lg:text-8xl font-bold text-white"
+              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold text-white"
               style={{ fontFamily: "cursive" }}
             >
               GROWMATE
             </h1>
-            <LeafIconSvg className="w-16 h-16 md:w-20 md:h-20 text-green-400" />
+            <LeafIconSvg className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 text-white flex-shrink-0" />
           </div>
-          <h3 className="text-lg md:text-xl font-light italic">
+          <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-light italic">
             "Từ khu vườn nhỏ đến giỏ trái cây tươi"
           </h3>
         </div>
       </div>
 
       {/* About Section */}
-      <div className="py-20 px-4 md:px-8 lg:px-16 bg-white">
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
+      <div className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 md:px-8 lg:px-16 bg-white">
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-12 items-center">
           {/* Left side - Images */}
-          <div className="relative">
+          <div className="relative order-2 lg:order-1">
             {/* Large circular image */}
-            <div className="relative w-80 h-80 md:w-96 md:h-96 rounded-full overflow-hidden mx-auto">
+            <div className="relative w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 rounded-full overflow-hidden mx-auto">
               <img
                 src={home2}
                 alt="GrowMate Farm"
@@ -137,7 +139,7 @@ const Homepage = () => {
               />
             </div>
             {/* Small circular image overlay */}
-            <div className="absolute bottom-8 left-8 w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-white shadow-lg">
+            <div className="absolute bottom-4 left-4 sm:bottom-8 sm:left-8 w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-white shadow-lg">
               <img
                 src={home3}
                 alt="GrowMate Products"
@@ -147,50 +149,54 @@ const Homepage = () => {
           </div>
 
           {/* Right side - Content */}
-          <div className="space-y-6">
-            <h3 className="text-yellow-500 text-lg font-semibold">
+          <div className="space-y-4 sm:space-y-6 order-1 lg:order-2 text-center lg:text-left">
+            <h3 className="text-yellow-500 text-base sm:text-lg font-semibold">
               Về Chúng Tôi
             </h3>
-            <h1 className="text-6xl md:text-6xl font-bold text-gray-900">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900">
               GrowMate là gì?
             </h1>
-            <p className="text-green-600 leading-relaxed font-bold">
+            <p className="text-sm sm:text-base text-green-600 leading-relaxed font-bold">
               GrowMate là nền tảng kết nối người trồng cây ăn quả với người tiêu
               dùng muốn nhận nuôi cây trồng. Qua nền tảng trực tuyến, bạn có
               thể:
             </p>
-            <ul className="space-y-3 text-gray-600">
+            <ul className="space-y-2 sm:space-y-3 text-sm sm:text-base text-gray-600">
               {listFeatures.map((feature, index) => (
-                <li className="flex items-center gap-3" key={index}>
-                  <span className="w-2 h-2 bg-main rounded-full"></span>
-                  {feature}
+                <li className="flex items-start gap-3" key={index}>
+                  <span className="w-2 h-2 bg-main rounded-full mt-2 flex-shrink-0"></span>
+                  <span className="text-left">{feature}</span>
                 </li>
               ))}
             </ul>
-            <p className="text-gray-600 leading-relaxed">
+            <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
               Chúng tôi hướng đến một mô hình nông nghiệp sạch, minh bạch và kết
               nối cảm xúc giữa người dùng với thiên nhiên
             </p>
-            <button
-              className="bg-main text-white px-8 py-3 rounded-lg hover:bg-green-500 transition-colors cursor-pointer"
-              onClick={() => nav("/about")}
-            >
-              Khám Phá Ngay
-            </button>
+            <div className="flex justify-center lg:justify-start">
+              <button
+                className="bg-main text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg hover:bg-green-500 transition-colors cursor-pointer text-sm sm:text-base"
+                onClick={() => nav("/about")}
+              >
+                Khám Phá Ngay
+              </button>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Vision Section */}
       <div
-        className="relative py-20 md:px-8 lg:px-16 text-left text-white "
+        className="relative py-12 sm:py-16 md:py-20 px-4 sm:px-6 md:px-8 lg:px-16 text-center sm:text-left text-white"
         style={{ backgroundImage: `url(${home4})` }}
       >
+        {/* Overlay for better text readability */}
+        <div className="absolute inset-0 bg-black/40"></div>
         <div className="relative z-10 max-w-2xl mx-auto">
-          <h1 className="text-3xl md:text-4xl font-bold mb-6">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6">
             Mô hình thúc đẩy nông nghiệp sạch, minh bạch và bền vững
           </h1>
-          <p className="text-lg leading-relaxed">
+          <p className="text-base sm:text-lg leading-relaxed">
             Chúng tôi cam kết mang đến một hệ sinh thái nông nghiệp bền vững,
             nơi người tiêu dùng có thể tin tưởng vào nguồn gốc sản phẩm.
           </p>
@@ -198,16 +204,16 @@ const Homepage = () => {
       </div>
 
       {/* Advantages Section */}
-      <div className="py-20 px-4 md:px-8 lg:px-16 bg-white">
+      <div className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 md:px-8 lg:px-16 bg-white">
         <div className="max-w-7xl mx-auto">
-          <h1 className="text-3xl md:text-4xl font-bold text-center mb-4 text-gray-900">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-3 sm:mb-4 text-gray-900">
             CÁC ƯU ĐIỂM ĐEM LẠI
           </h1>
-          <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
+          <p className="text-sm sm:text-base text-center text-gray-600 mb-8 sm:mb-12 max-w-2xl mx-auto px-4">
             GrowMate mang đến những giá trị độc đáo cho cả nông dân và người
             tiêu dùng
           </p>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             {advantageCards.map((card) => (
               <AdvantageCard
                 key={card.id}
@@ -220,20 +226,20 @@ const Homepage = () => {
       </div>
 
       {/* Testimonials Section */}
-      <div className="py-20 px-4 md:px-8 lg:px-16 bg-gray-100">
+      <div className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 md:px-8 lg:px-16 bg-gray-100">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <h3 className="text-green-500 text-lg font-semibold mb-2">
+          <div className="text-center mb-8 sm:mb-12">
+            <h3 className="text-green-500 text-base sm:text-lg font-semibold mb-2">
               Our Testimonials
             </h3>
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
               Mọi người nói gì về GrowMate
             </h1>
-            <p className="text-gray-600 max-w-2xl mx-auto">
+            <p className="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto px-4">
               Một số feedback của người dùng về dự án GrowMate nè!
             </p>
           </div>
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
             {feedbackBoxs.map((feedback) => (
               <FeedbackBox
                 key={feedback.id}
@@ -249,17 +255,17 @@ const Homepage = () => {
       </div>
 
       {/* Blog Section */}
-      <div className="py-20 px-4 md:px-8 lg:px-16 bg-white">
+      <div className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 md:px-8 lg:px-16 bg-white">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <h3 className="text-green-500 text-lg font-semibold mb-2">
+          <div className="text-center mb-8 sm:mb-12">
+            <h3 className="text-green-500 text-base sm:text-lg font-semibold mb-2">
               From the Blog
             </h3>
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-6 sm:mb-8">
               Tin Tức Mới
             </h1>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-8 sm:mb-12">
             {blogBoxs.map((blog) => (
               <BlogBox
                 key={blog.id}
@@ -273,7 +279,7 @@ const Homepage = () => {
           </div>
           <div className="text-center">
             <button
-              className="bg-main text-white px-8 py-3 rounded-lg hover:bg-green-500 transition-colors cursor-pointer"
+              className="bg-main text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg hover:bg-green-500 transition-colors cursor-pointer text-sm sm:text-base"
               onClick={() => nav("/blog")}
             >
               Xem thêm tin tức

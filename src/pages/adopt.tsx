@@ -66,7 +66,7 @@ const Adopt = () => {
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
       <section
-        className="relative min-h-[450px] md:min-h-[500px] lg:h-[550px] bg-cover bg-center overflow-hidden"
+        className="relative min-h-[400px] sm:min-h-[450px] md:min-h-[500px] lg:h-[550px] bg-cover bg-center overflow-hidden"
         style={{
           backgroundImage: `url(${adoptHeroBg})`,
         }}
@@ -74,34 +74,42 @@ const Adopt = () => {
         {/* Gradient overlay for better depth and text readability */}
         <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-black/30" />
 
-        <div className="relative h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-0 flex items-center">
-          <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+        <div className="relative h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-0 flex items-center">
+          <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-center">
             {/* Left content - Enhanced typography and spacing */}
-            <div className="z-10 space-y-4 md:space-y-6 text-center lg:text-left">
-              <div className="space-y-3 md:space-y-4">
-                <h1 className="group relative text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-white leading-tight tracking-tight cursor-default ">
+            <div className="z-10 space-y-3 sm:space-y-4 md:space-y-6 text-center lg:text-left">
+              <div className="space-y-2 sm:space-y-3 md:space-y-4">
+                <h1 className="group relative text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white leading-tight tracking-tight cursor-default">
                   <span className="relative">
                     Cùng{" "}
-                    <span className="relative text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl bg-gradient-to-r from-white via-main to-white bg-clip-text text-transparent animate-gradient drop-shadow-[0_0_30px_rgba(16,185,129,0.5)]">
+                    <span className="relative text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl bg-gradient-to-r from-white via-main to-white bg-clip-text text-transparent animate-gradient drop-shadow-[0_0_30px_rgba(16,185,129,0.5)]">
                       GrowMate
                     </span>
                   </span>
                 </h1>
                 <div className="flex items-center gap-2 md:gap-3 justify-center lg:justify-start">
                   <div className="h-0.5 md:h-1 w-9 md:w-10 bg-main rounded-full" />
-                  <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl text-white/95 italic font-light font-greatvibes">
+                  <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl text-white/95 italic font-light font-greatvibes">
                     Tạo nên những khoảnh khắc đẹp
                   </p>
                 </div>
               </div>
 
-              <p className="text-base md:text-lg text-white/90 max-w-xl mx-auto lg:mx-0 leading-relaxed px-4 lg:px-0">
+              <p className="text-sm sm:text-base md:text-lg text-white/90 max-w-xl mx-auto lg:mx-0 leading-relaxed px-2 sm:px-4 lg:px-0">
                 Khám phá và nhận nuôi những cây trồng từ các nông trại uy tín,
                 tạo nên kết nối bền vững giữa bạn và thiên nhiên.
               </p>
 
               <div className="flex items-center gap-4 pt-2 justify-center lg:justify-start">
-                <button className="group relative bg-main hover:bg-green-600 text-white px-6 md:px-8 py-3 md:py-3.5 rounded-full font-semibold text-sm md:text-base transition-all duration-300 shadow-lg hover:shadow-2xl hover:scale-105 overflow-hidden">
+                <button
+                  onClick={() => {
+                    const tabsSection = document.getElementById("tabs-section")
+                    if (tabsSection) {
+                      tabsSection.scrollIntoView({ behavior: "smooth" })
+                    }
+                  }}
+                  className="group relative bg-main hover:bg-green-600 text-white px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-3.5 rounded-full font-semibold text-xs sm:text-sm md:text-base transition-all duration-300 shadow-lg hover:shadow-2xl hover:scale-105 overflow-hidden"
+                >
                   <span className="relative z-10">
                     Khám Phá Ngay Bên Dưới! 🌱
                   </span>
@@ -136,9 +144,12 @@ const Adopt = () => {
       </section>
 
       {/* Tabs Section */}
-      <section className="bg-white border-b border-gray-200 sticky top-0 z-10 shadow-sm">
+      <section
+        id="tabs-section"
+        className="bg-white border-b border-gray-200 sticky top-0 z-10 shadow-sm"
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex gap-8">
+          <div className="flex gap-4 sm:gap-6 md:gap-8 overflow-x-auto scrollbar-hide -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
             {tabs.map((tab) => (
               <button
                 key={tab.key}
@@ -146,10 +157,10 @@ const Adopt = () => {
                   setActiveTab(tab.key)
                   handlePageChange(1)
                 }}
-                className={`py-4 px-2 font-semibold text-sm transition-all duration-200 border-b-2 cursor-pointer ${
+                className={`py-4 px-2 sm:px-4 font-semibold text-xs sm:text-sm transition-all duration-300 border-b-2 cursor-pointer whitespace-nowrap flex-shrink-0 ${
                   activeTab === tab.key
                     ? "border-main text-main"
-                    : "border-transparent text-gray-600 hover:text-gray-900"
+                    : "border-transparent text-gray-600 hover:text-gray-900 hover:border-gray-300"
                 }`}
               >
                 {tab.label}
@@ -172,14 +183,14 @@ const Adopt = () => {
       </section>
 
       {/* Products Grid */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         {loading && rawPageItems.length === 0 && !inSearchMode ? (
           <div className="flex justify-center items-center py-20">
             <div className="animate-pulse text-gray-500">Đang tải...</div>
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
               {items.map((post) => {
                 const firstMedia =
                   post.media && post.media.length > 0

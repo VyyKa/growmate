@@ -4,7 +4,7 @@ export const AimIconSvg = ({ size = 24, className = "" }: SvgIconProps) => {
   return (
     <svg
       className={className}
-      fill="#000000"
+      fill="currentColor"
       width={size}
       height={size}
       viewBox="0 0 512 512"
@@ -14,7 +14,7 @@ export const AimIconSvg = ({ size = 24, className = "" }: SvgIconProps) => {
       xmlSpace="preserve"
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
-      stroke="#000000"
+      stroke="currentColor"
       strokeWidth="0.00512"
     >
       <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>

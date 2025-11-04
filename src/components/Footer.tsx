@@ -1,4 +1,5 @@
 import Logo from "../assets/Logo.png"
+import { FacebookIconSvg } from "../assets/svgs/FacebookIconSvg"
 
 const Footer = () => {
   const exploreLinks = [
@@ -78,29 +79,33 @@ const Footer = () => {
               ))}
             </div>
 
-            {/* Email Subscription */}
+            {/* Social Media Icons */}
             <div className="mt-6">
-              <div className="flex">
-                <input
-                  type="email"
-                  placeholder="Your Email Address"
-                  className="flex-1 px-4 py-2 rounded-l-lg bg-gray-800 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:border-green-400"
-                />
-                <button className="bg-main hover:bg-green-500 px-4 py-2 rounded-r-lg transition-colors duration-300 cursor-pointer">
+              <div className="flex items-center gap-4">
+                <a
+                  href="https://www.facebook.com/profile.php?id=61581546660845"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center w-10 h-10 bg-gray-800 hover:bg-blue-600 rounded-full transition-colors duration-300"
+                  aria-label="Facebook"
+                >
+                  <FacebookIconSvg size={20} className="text-white" />
+                </a>
+                <a
+                  href="https://www.youtube.com/@D%E1%BB%B1%C3%81nGrowMate"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center w-10 h-10 bg-gray-800 hover:bg-red-600 rounded-full transition-colors duration-300"
+                  aria-label="YouTube"
+                >
                   <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
+                    className="w-5 h-5 text-white"
+                    fill="currentColor"
                     viewBox="0 0 24 24"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
-                    />
+                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
                   </svg>
-                </button>
+                </a>
               </div>
             </div>
           </div>

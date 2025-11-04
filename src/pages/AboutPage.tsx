@@ -26,24 +26,24 @@ const AboutPage = () => {
 
   const timeline = [
     {
-      year: "2024",
+      year: "05/2025",
       event: "Khởi nguồn từ FPT University",
-      desc: "Ý tưởng được thai nghén trong khóa học khởi nghiệp",
+      desc: "Ý tưởng được trình bày trong khóa học khởi nghiệp EX101",
     },
     {
-      year: "2024",
+      year: "07/2025",
       event: "Phát triển MVP",
       desc: "Xây dựng phiên bản thử nghiệm đầu tiên",
     },
     {
-      year: "2025",
+      year: "11/2025",
       event: "Ra mắt chính thức",
       desc: "Triển khai nền tảng với đầy đủ tính năng",
     },
     {
       year: "Tương lai",
       event: "Mở rộng Đông Nam Á",
-      desc: "Kế hoạch phát triển ra khu vực",
+      desc: "Kế hoạch phát triển ra toàn bộ khu vực Đông Nam Á",
     },
   ]
 
@@ -277,20 +277,19 @@ const AboutPage = () => {
 
                   <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4 sm:mb-6 text-balance">
                     Câu Chuyện Của
-                    <span className="text-green-600"> Chúng Tôi</span>
+                    <span className="text-green-600"> GROWMATE</span>
                   </h2>
 
                   <div className="space-y-3 sm:space-y-4 text-gray-700 text-base sm:text-lg leading-relaxed">
                     <p className="text-pretty">
-                      Bắt đầu từ một ý tưởng đơn giản trong lớp học tại{" "}
+                      Bắt đầu từ một ý tưởng đơn giản nằm trong môn học khởi nghiệp EXE101 tại{" "}
                       <span className="font-semibold text-blue-600">
-                        FPT University
+                      Đại Học FPT
                       </span>
                       , GrowMate đã phát triển thành một sứ mệnh lớn lao hơn.
                     </p>
                     <p className="text-pretty">
-                      Chúng tôi nhận ra khoảng cách giữa người tiêu dùng thành
-                      thị và nông sản sạch, cùng với những khó khăn mà nông dân
+                      Chúng tôi nhận ra khoảng cách giữa người tiêu dùng và nông sản sạch, cùng với những khó khăn mà nông dân
                       gặp phải trong việc tiếp cận thị trường.
                     </p>
                     <p className="font-semibold text-green-700 text-pretty">
@@ -334,7 +333,7 @@ const AboutPage = () => {
         <div className="container mx-auto px-4 sm:px-6">
           <div className="text-center mb-12 sm:mb-16">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4 px-4 text-balance">
-              Giá Trị <span className="text-green-600">Cốt Lõi HERO</span>
+              Giá Trị <span className="text-green-600">Cốt Lõi</span>
             </h2>
             <p className="text-base sm:text-lg text-gray-600 max-w-3xl mx-auto px-4 text-pretty">
               "Empowering People, Building Legacy" - Triết lý dẫn đường cho mọi
@@ -452,8 +451,7 @@ const AboutPage = () => {
               Đội Ngũ <span className="text-green-600">Sáng Lập</span>
             </h2>
             <p className="text-base sm:text-lg text-gray-600 max-w-3xl mx-auto px-4 text-pretty">
-              Những người trẻ đầy nhiệt huyết với sứ mệnh thay đổi nông nghiệp
-              Việt Nam
+              Những người trẻ đầy nhiệt huyết với sứ mệnh thay đổi nông nghiệp sạch và minh bạch tại Việt Nam
             </p>
           </div>
 
@@ -476,25 +474,27 @@ const AboutPage = () => {
                       </p>
                       <p className="text-sm sm:text-base text-gray-600 leading-relaxed text-pretty">
                         Người thầy đã truyền cảm hứng và định hướng cho dự án
-                        GrowMate
+                        GrowMate trong suốt quá trình phát triển và xây dựng nền tảng.
                       </p>
                     </div>
                   </div>
                 </div>
+                {/* Bottom accent to match Mentor 2 card */}
+                <div className="h-2 w-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-b-2xl"></div>
               </div>
 
               {/* Mentor 2 */}
-              <div className="bg-gradient-to-r from-indigo-500 to-sky-500 rounded-2xl p-1">
+              <div className="bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl p-1">
                 <div className="bg-white rounded-2xl p-6 sm:p-8">
                   <div className="flex flex-col md:flex-row items-center gap-6">
-                    <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-indigo-400 to-sky-400 rounded-full flex items-center justify-center shadow-2xl flex-shrink-0">
+                    <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-purple-400 to-pink-400 rounded-full flex items-center justify-center shadow-2xl flex-shrink-0">
                       <span className="text-4xl sm:text-5xl">👨‍🏫</span>
                     </div>
                     <div className="text-center md:text-left">
                       <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
                         Nguyễn Phương Duy
                       </h3>
-                      <p className="text-lg sm:text-xl text-indigo-600 font-semibold mb-3">
+                      <p className="text-lg sm:text-xl text-purple-600 font-semibold mb-3">
                         Mentor hướng dẫn
                       </p>
                       <p className="text-sm sm:text-base text-gray-600 leading-relaxed text-pretty">
@@ -505,7 +505,7 @@ const AboutPage = () => {
                   </div>
                 </div>
                 {/* Bottom accent to match Mentor 1 card */}
-                <div className="h-2 w-full bg-gradient-to-r from-indigo-500 to-sky-500 rounded-b-2xl"></div>
+                <div className="h-2 w-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-b-2xl"></div>
               </div>
             </div>
           </div>
@@ -591,7 +591,10 @@ const AboutPage = () => {
           {/* Section Header */}
           <div className="text-center mb-16 sm:mb-20">
             <h2 className="text-4xl sm:text-5xl md:text-6xl font-black text-gray-900 mb-4 text-balance">
-              Sứ Mệnh & Tầm Nhìn
+              Sứ Mệnh &{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-emerald-600">
+                Tầm Nhìn
+              </span>
             </h2>
             <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto text-pretty">
               Định hướng phát triển bền vững và tạo giá trị cho cộng đồng
@@ -632,7 +635,7 @@ const AboutPage = () => {
                     <div className="w-30 h-30 sm:w-24 sm:h-24 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center shadow-lg flex-shrink-0">
                       <AimIconSvg size={80} className="text-white" />
                     </div>
-                    <h3 className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 leading-tight text-balance">
+                    <h3 className="text-3xl sm:text-4xl lg:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-emerald-600 leading-tight text-balance">
                       Sứ Mệnh Của Chúng Tôi
                     </h3>
                   </div>
@@ -640,11 +643,10 @@ const AboutPage = () => {
                   {/* Description */}
                   <p className="text-lg sm:text-xl text-gray-700 leading-relaxed text-pretty">
                     Mang đến mô hình{" "}
-                    <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-600">
+                    <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-emerald-600">
                       nông nghiệp số minh bạch, cảm xúc và bền vững
                     </span>
-                    , nơi người tiêu dùng trở thành đối tác của cây trồng và
-                    nông dân.
+                    , nơi người tiêu dùng trở thành đối tác của nông dân và ngược lại.
                   </p>
                 </div>
               </div>
@@ -660,7 +662,7 @@ const AboutPage = () => {
                     <div className="w-30 h-30 sm:w-24 sm:h-24 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center shadow-lg flex-shrink-0">
                       <LeafIconSvg size={60} className=" text-white" />
                     </div>
-                    <h3 className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 leading-tight text-balance">
+                    <h3 className="text-3xl sm:text-4xl lg:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-emerald-600 leading-tight text-balance">
                       Tầm Nhìn Của Chúng Tôi
                     </h3>
                   </div>
