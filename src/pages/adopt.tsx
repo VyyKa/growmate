@@ -1,4 +1,3 @@
-import { useState } from "react"
 import { toast } from "react-toastify"
 import { useNavigate } from "react-router-dom"
 import ItemBox from "../components/ItemBox"
@@ -10,11 +9,9 @@ import useClientSearchPagination from "../hooks/useClientSearchPagination"
 import { getAdoptImageUrl } from "../services/cloudinary/transformations"
 import adoptHero from "../assets/imgs/adopt1.png"
 import adoptHeroBg from "../assets/imgs/adoptHeroBackground.png"
-
-type TabKey = "featured" | "gardens" | "2025"
+import Breadcrumb from "../components/Breadcrumb"
 
 const Adopt = () => {
-  const [activeTab, setActiveTab] = useState<TabKey>("featured")
   const navigate = useNavigate()
 
   const {
@@ -51,12 +48,6 @@ const Adopt = () => {
     },
   })
 
-  const tabs = [
-    { key: "featured" as TabKey, label: "Cây Trồng Nổi Bật" },
-    { key: "gardens" as TabKey, label: "Nhà Vườn Nổi Bật 2025" },
-    { key: "2025" as TabKey, label: "Cây Trồng 2025" },
-  ]
-
   const handlePageChangeWithScroll = (page: number) => {
     handlePageChange(page)
     window.scrollTo({ top: 0, behavior: "smooth" })
@@ -64,6 +55,8 @@ const Adopt = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <Breadcrumb />
+
       {/* Hero Section */}
       <section
         className="relative min-h-[400px] sm:min-h-[450px] md:min-h-[500px] lg:h-[550px] bg-cover bg-center overflow-hidden"
@@ -141,33 +134,6 @@ const Adopt = () => {
 
         {/* Bottom wave decoration */}
         <div className="absolute bottom-0 left-0 right-0 h-9 md:h-10 bg-gradient-to-t from-white to-transparent" />
-      </section>
-
-      {/* Tabs Section */}
-      <section
-        id="tabs-section"
-        className="bg-white border-b border-gray-200 sticky top-0 z-10 shadow-sm"
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex gap-4 sm:gap-6 md:gap-8 overflow-x-auto scrollbar-hide -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
-            {tabs.map((tab) => (
-              <button
-                key={tab.key}
-                onClick={() => {
-                  setActiveTab(tab.key)
-                  handlePageChange(1)
-                }}
-                className={`py-4 px-2 sm:px-4 font-semibold text-xs sm:text-sm transition-all duration-300 border-b-2 cursor-pointer whitespace-nowrap flex-shrink-0 ${
-                  activeTab === tab.key
-                    ? "border-main text-main"
-                    : "border-transparent text-gray-600 hover:text-gray-900 hover:border-gray-300"
-                }`}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </div>
-        </div>
       </section>
 
       {/* Search Bar Section */}

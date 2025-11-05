@@ -36,7 +36,7 @@ const Breadcrumb = ({ breadcrumbItems, separator = "/" }: BreadcrumbProps) => {
     products: "Sản phẩm",
     farmers: "Nông dân",
     trees: "Cây trồng",
-    adoptions: "Nhận nuôi",
+    adopt: "Nhận nuôi",
     checkout: "Thanh toán",
     review: "Xác nhận đơn hàng",
     callback: "Xác thực thanh toán",

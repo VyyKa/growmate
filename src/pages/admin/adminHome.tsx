@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 import {
   Users,
   TreePine,
@@ -12,6 +13,8 @@ import {
 import RevenueChart from "../../components/Admin/RevenueChart"
 
 const AdminHome = () => {
+  const navigate = useNavigate()
+
   const [stats] = useState({
     totalUsers: 1245,
     userGrowth: 12.5,
@@ -22,44 +25,6 @@ const AdminHome = () => {
     totalRevenue: 45678000,
     revenueGrowth: 15.7,
   })
-
-  const [recentActivities] = useState([
-    {
-      id: 1,
-      type: "user",
-      action: "Người dùng mới đăng ký",
-      user: "Nguyễn Văn A",
-      time: "5 phút trước",
-    },
-    {
-      id: 2,
-      type: "order",
-      action: "Đơn hàng mới",
-      user: "Trần Thị B",
-      time: "12 phút trước",
-    },
-    {
-      id: 3,
-      type: "tree",
-      action: "Bài đăng cây mới",
-      user: "Farmer Vườn Xanh",
-      time: "25 phút trước",
-    },
-    {
-      id: 4,
-      type: "user",
-      action: "Người dùng cập nhật profile",
-      user: "Lê Văn C",
-      time: "1 giờ trước",
-    },
-    {
-      id: 5,
-      type: "order",
-      action: "Đơn hàng hoàn thành",
-      user: "Phạm Thị D",
-      time: "2 giờ trước",
-    },
-  ])
 
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat("vi-VN", {
@@ -104,6 +69,24 @@ const AdminHome = () => {
       color: "from-amber-500 to-amber-600",
       bgLight: "bg-amber-50",
       textColor: "text-amber-600",
+    },
+  ]
+
+  const quickActions = [
+    {
+      title: "Thêm User",
+      icon: Users,
+      path: "/admin/users",
+    },
+    {
+      title: "Xem đơn hàng",
+      icon: Package,
+      path: "/admin/products",
+    },
+    {
+      title: "Xem báo cáo",
+      icon: Activity,
+      path: "/admin/reports",
     },
   ]
 
@@ -174,81 +157,24 @@ const AdminHome = () => {
       {/* Quick Actions */}
       <div className="bg-white rounded-2xl shadow-md border border-gray-100 p-6">
         <h2 className="text-xl font-bold text-gray-900 mb-6">Thao tác nhanh</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <button className="p-4 border-2 border-gray-200 rounded-xl hover:border-[var(--color-main)] hover:bg-green-50 transition-all duration-200 group">
-            <Users className="w-8 h-8 text-gray-400 group-hover:text-[var(--color-main)] transition-colors mx-auto mb-2" />
-            <p className="text-sm font-medium text-gray-700 group-hover:text-[var(--color-main)] transition-colors">
-              Thêm User
-            </p>
-          </button>
-          <button className="p-4 border-2 border-gray-200 rounded-xl hover:border-[var(--color-main)] hover:bg-green-50 transition-all duration-200 group">
-            <TreePine className="w-8 h-8 text-gray-400 group-hover:text-[var(--color-main)] transition-colors mx-auto mb-2" />
-            <p className="text-sm font-medium text-gray-700 group-hover:text-[var(--color-main)] transition-colors">
-              Quản lý cây
-            </p>
-          </button>
-          <button className="p-4 border-2 border-gray-200 rounded-xl hover:border-[var(--color-main)] hover:bg-green-50 transition-all duration-200 group">
-            <Package className="w-8 h-8 text-gray-400 group-hover:text-[var(--color-main)] transition-colors mx-auto mb-2" />
-            <p className="text-sm font-medium text-gray-700 group-hover:text-[var(--color-main)] transition-colors">
-              Xem đơn hàng
-            </p>
-          </button>
-          <button className="p-4 border-2 border-gray-200 rounded-xl hover:border-[var(--color-main)] hover:bg-green-50 transition-all duration-200 group">
-            <Activity className="w-8 h-8 text-gray-400 group-hover:text-[var(--color-main)] transition-colors mx-auto mb-2" />
-            <p className="text-sm font-medium text-gray-700 group-hover:text-[var(--color-main)] transition-colors">
-              Xem báo cáo
-            </p>
-          </button>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {quickActions.map((action, index) => (
+            <button
+              key={index}
+              onClick={() => navigate(action.path)}
+              className="p-4 border-2 border-gray-200 rounded-xl hover:border-[var(--color-main)] hover:bg-green-50 transition-all duration-200 group"
+            >
+              <action.icon className="w-8 h-8 text-gray-400 group-hover:text-[var(--color-main)] transition-colors mx-auto mb-2" />
+              <p className="text-sm font-medium text-gray-700 group-hover:text-[var(--color-main)] transition-colors">
+                {action.title}
+              </p>
+            </button>
+          ))}
         </div>
       </div>
 
-      {/* Charts and Activity Section */}
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-        {/* Revenue Chart */}
-        <RevenueChart className="xl:col-span-2" />
-
-        {/* Recent Activity */}
-        <div className="bg-white rounded-2xl shadow-md border border-gray-100 p-6">
-          <h2 className="text-xl font-bold text-gray-900 mb-6">
-            Hoạt động gần đây
-          </h2>
-          <div className="space-y-4">
-            {recentActivities.map((activity) => (
-              <div
-                key={activity.id}
-                className="flex items-start gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors"
-              >
-                <div
-                  className={`p-2 rounded-lg ${
-                    activity.type === "user"
-                      ? "bg-blue-100"
-                      : activity.type === "order"
-                      ? "bg-purple-100"
-                      : "bg-green-100"
-                  }`}
-                >
-                  {activity.type === "user" ? (
-                    <Users className="w-4 h-4 text-blue-600" />
-                  ) : activity.type === "order" ? (
-                    <Package className="w-4 h-4 text-purple-600" />
-                  ) : (
-                    <TreePine className="w-4 h-4 text-green-600" />
-                  )}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-gray-900">
-                    {activity.action}
-                  </p>
-                  <p className="text-xs text-gray-600 mt-0.5">
-                    {activity.user}
-                  </p>
-                  <p className="text-xs text-gray-400 mt-1">{activity.time}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+      {/* Revenue Chart */}
+      <RevenueChart className="xl:col-span-2" />
     </div>
   )
 }
