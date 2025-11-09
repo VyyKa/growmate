@@ -3,6 +3,10 @@ import type { AdoptionPaged, GetAdoptionsQuery, AdoptionDetail, UpdateAdoptionPa
 
 const ADOPTION_BASE_URL = "/Adoption"
 
+/**
+ * Get adoptions with optional filters (paged)
+ * Accepts: customerId, farmerId, orderId, postId, page, pageSize
+ */
 export const getAdoptions = async (params?: GetAdoptionsQuery): Promise<AdoptionPaged> => {
 	const res = await axiosClient.get(ADOPTION_BASE_URL, { params })
 	const raw = res.data

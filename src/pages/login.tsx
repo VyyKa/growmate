@@ -77,7 +77,6 @@ const Login = () => {
       toast.error(
         getErrorMessage(error, "Đăng nhập thất bại. Vui lòng thử lại.")
       )
-    } finally {
     }
   }
 

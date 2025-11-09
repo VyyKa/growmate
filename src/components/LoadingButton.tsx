@@ -12,6 +12,7 @@ export default function LoadingButton({
   loadingText,
   children,
   onClick,
+  className,
   ...rest
 }: LoadingButtonProps) {
   const { run, loading } = useAsyncAction(async () => {
@@ -25,6 +26,7 @@ export default function LoadingButton({
   return (
     <Button
       {...rest}
+      className={`!h-[50px] !text-base !font-medium ${className || ""}`}
       loading={isLoading}
       onClick={async (e) => {
         if (onClick) onClick(e)
@@ -35,5 +37,3 @@ export default function LoadingButton({
     </Button>
   )
 }
-
-

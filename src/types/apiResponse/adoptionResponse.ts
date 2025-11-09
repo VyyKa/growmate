@@ -3,6 +3,7 @@ export type GetAdoptionsQuery = {
 	customerId?: number
 	farmerId?: number
 	orderId?: number
+	postId?: number
 	page?: number
 	pageSize?: number
 }
@@ -29,6 +30,7 @@ export type AdoptionListItem = {
 	years: number
 	totalPrice: number
 	postCode: string
+	postId: number
 }
 
 // Paged response (plain, no envelope)
