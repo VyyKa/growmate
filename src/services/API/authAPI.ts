@@ -20,8 +20,8 @@ export const resendVerificationCode = async (email: string) => {
   return axiosClient.post<ApiEnvelope<{ message: string }>>(`${AUTH_BASE_URL}/resend-verification`, { email })
 }
 
-export const loginGoogle = async () => {
-  return axiosClient.get(`${AUTH_BASE_URL}/login-google`)
+export const loginWithGoogleCode = async (code: string) => {
+  return axiosClient.post<ApiEnvelope<LoginPayload>>(`${AUTH_BASE_URL}/google`, { code })
 }
 
 export const forgotPassword = async (email: string) => {

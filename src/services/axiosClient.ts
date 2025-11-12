@@ -1,6 +1,10 @@
 import axios from 'axios';
 
-export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'https://growmate.azurewebsites.net/api';
+// const DEFAULT_API_BASE_URL = 'https://localhost:7283/api'; // Local swagger: https://localhost:7283/swagger/index.html
+const DEFAULT_API_BASE_URL = 'https://growmate.azurewebsites.net/api';
+
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? DEFAULT_API_BASE_URL;
+// export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'https://localhost:7283/api';
 
 // Initialize token from localStorage on module load
 // Priority: 1) Check Redux store "auth" key, 2) Check "auth_token" key (legacy)
