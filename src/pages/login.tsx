@@ -1,6 +1,6 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Divider } from "antd"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useSearchParams } from "react-router-dom"
 import { toast } from "react-toastify"
 import { useAppDispatch } from "../hooks/reduxHooks"
 import { setCredentials } from "../store/slices/authSlice.ts"
@@ -27,6 +27,18 @@ const Login = () => {
 
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
+  const [searchParams, setSearchParams] = useSearchParams()
+
+  // Xử lý error từ query params (từ OAuth redirect)
+  useEffect(() => {
+    const error = searchParams.get("error")
+    if (error) {
+      toast.error(decodeURIComponent(error))
+      // Xóa error khỏi URL
+      searchParams.delete("error")
+      setSearchParams(searchParams, { replace: true })
+    }
+  }, [searchParams, setSearchParams])
 
   const handleLogin = async () => {
     setErrors({})
