@@ -10,9 +10,7 @@ const OrderSuccessPage = () => {
   const orderCode = searchParams.get("orderCode") || "N/A"
   const total = Number(searchParams.get("total") || 0)
   const status = searchParams.get("status") || "success" // success | failed
-  const errorMessage =
-    searchParams.get("error") ||
-    "Đã có lỗi xảy ra trong quá trình xử lý đơn hàng"
+  const errorMessage = "Đã có lỗi xảy ra trong quá trình xử lý đơn hàng"
 
   // Check if order failed
   const isFailed = status === "failed"

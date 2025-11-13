@@ -41,7 +41,9 @@ type GoogleCodeClientConfig = {
 }
 
 // TODO: Move to .env file for production
-const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID as string | undefined
+const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID as
+  | string
+  | undefined
 
 type GoogleLoginButtonProps = {
   className?: string
@@ -64,11 +66,15 @@ const GoogleLoginButton = ({
     if (scriptReady) return
 
     const scriptId = "google-identity-services"
-    const existingScript = document.getElementById(scriptId) as HTMLScriptElement | null
+    const existingScript = document.getElementById(
+      scriptId
+    ) as HTMLScriptElement | null
 
     const handleLoad = () => setScriptReady(true)
     const handleError = () => {
-      toast.error("Không thể tải Google Identity Services. Vui lòng thử lại sau.")
+      toast.error(
+        "Không thể tải Google Identity Services. Vui lòng thử lại sau."
+      )
       setScriptReady(false)
     }
 
@@ -100,7 +106,9 @@ const GoogleLoginButton = ({
     if (loading) return
 
     if (!GOOGLE_CLIENT_ID) {
-      toast.error("Google Client ID chưa được cấu hình. Vui lòng đặt biến VITE_GOOGLE_CLIENT_ID.")
+      toast.error(
+        "Google Client ID chưa được cấu hình. Vui lòng đặt biến VITE_GOOGLE_CLIENT_ID."
+      )
       return
     }
 
@@ -119,7 +127,11 @@ const GoogleLoginButton = ({
         callback: async (response) => {
           if (response.error) {
             setLoading(false)
-            toast.error(`Google đăng nhập thất bại: ${response.error_description ?? response.error}`)
+            toast.error(
+              `Google đăng nhập thất bại: ${
+                response.error_description ?? response.error
+              }`
+            )
             return
           }
 
@@ -131,10 +143,14 @@ const GoogleLoginButton = ({
 
           try {
             const res = await loginWithGoogleCode(response.code)
-            const packet = res.data as { data?: LoginPayload } & Partial<LoginPayload>
+            const packet = res.data as {
+              data?: LoginPayload
+            } & Partial<LoginPayload>
             const payload: LoginPayload | undefined =
               packet.data ??
-              (packet.token && packet.user ? { token: packet.token, user: packet.user } : undefined)
+              (packet.token && packet.user
+                ? { token: packet.token, user: packet.user }
+                : undefined)
 
             const token = payload?.token
             const user = payload?.user
@@ -144,14 +160,19 @@ const GoogleLoginButton = ({
             }
 
             setAuthToken(token)
-            dispatch(setCredentials({ user, token, rememberMe: true }))
+            dispatch(setCredentials({ user, token }))
 
             toast.success("Đăng nhập Google thành công!")
             const targetPath = getRoleBasedPath(user.role as UserRole)
             navigate(targetPath, { replace: true })
           } catch (error) {
             console.error("Google login exchange failed:", error)
-            toast.error(getErrorMessage(error, "Đăng nhập Google thất bại. Vui lòng thử lại."))
+            toast.error(
+              getErrorMessage(
+                error,
+                "Đăng nhập Google thất bại. Vui lòng thử lại."
+              )
+            )
           } finally {
             setLoading(false)
           }
