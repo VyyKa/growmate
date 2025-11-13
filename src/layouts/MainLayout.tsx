@@ -28,7 +28,7 @@ const MainLayout = () => {
       <AuthAlertDialog
         isOpen={showExpiryDialog}
         onClose={closeDialog}
-        countdown={10}
+        countdown={30}
       />
     </>
   )

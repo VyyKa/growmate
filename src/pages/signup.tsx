@@ -76,7 +76,6 @@ const Signup = () => {
     } catch (error: unknown) {
       console.error("Signup failed:", error)
       toast.error(getErrorMessage(error, "Đăng ký thất bại. Vui lòng thử lại."))
-    } finally {
     }
   }
 

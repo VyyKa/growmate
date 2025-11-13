@@ -40,7 +40,6 @@ const EmailVerification = ({ email, onBack }: EmailVerificationProps) => {
       toast.error("Vui lòng nhập đầy đủ mã xác thực 6 số")
       return
     }
-    console.log(code)
     setIsVerifying(true)
     try {
       const res = await verifyEmail(email, code)

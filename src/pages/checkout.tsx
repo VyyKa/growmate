@@ -104,7 +104,6 @@ const CheckoutPage = () => {
         }
       })
       setErrors(fieldErrors)
-      // Scroll to first error
       setTimeout(() => {
         const firstErrorElement = document.querySelector(
           '[class*="border-red-500"]'

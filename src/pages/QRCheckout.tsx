@@ -9,6 +9,16 @@ import Breadcrumb from "../components/Breadcrumb"
 import ClockIconSvg from "../assets/svgs/ClockIconSvg"
 import CheckCircleIconSvg from "../assets/svgs/CheckCircleIconSvg"
 import { PaymentStatus } from "../types/enums/PaymentStatus"
+import { clearCart, type CartState } from "../store/slices/cartSlice"
+import {
+  addItemToCart,
+  getCurrentCart,
+  removeCartItem,
+} from "../services/API/cartAPI"
+import { useAppDispatch } from "../hooks/reduxHooks"
+import type { CartGetResponse } from "../types/apiResponse/cartResponse"
+import { isCartDetail } from "../types/apiResponse/cartResponse"
+import { loadFromLocalStorage } from "../store/localStorage"
 
 /**
  * QRCheckout Page - Hiển thị mã QR thanh toán SEPAY
@@ -24,6 +34,7 @@ const QRCheckout = () => {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const { createQRPayment } = useVNPay()
+  const dispatch = useAppDispatch()
 
   const [qrData, setQrData] = useState<CreatePaymentQrResponse | null>(null)
   const [orderData, setOrderData] = useState<Order | null>(null)
@@ -49,7 +60,6 @@ const QRCheckout = () => {
     setError(null)
 
     try {
-      console.log(orderId)
       const response = await createQRPayment(Number(orderId))
 
       if (!response.success || !response.qrData) {
@@ -64,7 +74,6 @@ const QRCheckout = () => {
         setOrderData(orderResponse.data)
       } catch (orderError) {
         console.error("Failed to fetch order details:", orderError)
-        // Continue even if order fetch fails
       }
 
       // Calculate time remaining
@@ -91,8 +100,16 @@ const QRCheckout = () => {
       const response = await getPaymentById(qrData.paymentId)
       const payment = response.data
 
-      // If payment is completed, redirect to success page
+      // If payment is completed, clear cart then redirect to success page
       if (payment.status === PaymentStatus.SUCCESS) {
+        const res = await getCurrentCart()
+        const data = res.data as CartGetResponse
+        if (isCartDetail(data)) {
+          for (const item of data.cartItems) {
+            await removeCartItem(item.cartItemId)
+          }
+        }
+        dispatch(clearCart())
         navigate(
           `/order/success?orderCode=${qrData.orderId}&total=${
             payment.amount
@@ -107,7 +124,18 @@ const QRCheckout = () => {
     } finally {
       setIsChecking(false)
     }
-  }, [qrData, isChecking, navigate])
+  }, [qrData, isChecking, navigate, dispatch])
+
+  const handleCancelButton = async () => {
+    const data = loadFromLocalStorage<CartState>("cart") ?? { items: [] }
+    for (const item of data.items) {
+      await addItemToCart({
+        productId: item.productId,
+        quantity: item.quantity,
+      })
+    }
+    navigate(-1)
+  }
 
   /**
    * Initialize QR payment on mount
@@ -164,13 +192,21 @@ const QRCheckout = () => {
       .toString()
       .padStart(2, "0")}`
   }
-
-  /**
-   * Copy QR content to clipboard
-   */
   const copyToClipboard = () => {
     if (!qrData) return
     navigator.clipboard.writeText(qrData.qrContent)
+  }
+
+  // Map backend status code to Vietnamese label for UI
+  const getStatusLabel = (status: string | undefined | null): string => {
+    const code = (status || "").toUpperCase()
+    const map: Record<string, string> = {
+      PENDING: PaymentStatus.PENDING,
+      SUCCESS: PaymentStatus.SUCCESS,
+      COMPLETED: PaymentStatus.COMPLETED,
+      FAILED: PaymentStatus.FAILED,
+    }
+    return map[code] ?? status ?? ""
   }
 
   if (isLoading) {
@@ -369,7 +405,7 @@ const QRCheckout = () => {
                     <div className="flex justify-between items-center pb-3 border-b border-gray-200">
                       <span className="text-gray-600">Trạng thái:</span>
                       <span className="px-3 py-1 bg-yellow-100 text-yellow-800 text-sm font-semibold rounded-full">
-                        {qrData.status}
+                        {getStatusLabel(qrData.status)}
                       </span>
                     </div>
                     <div className="flex justify-between items-center pt-2">
@@ -461,7 +497,7 @@ const QRCheckout = () => {
 
                 {/* Cancel button */}
                 <button
-                  onClick={() => navigate(-1)}
+                  onClick={handleCancelButton}
                   className="w-full px-6 py-3 bg-gray-200 text-gray-700 font-semibold rounded-lg hover:bg-gray-300 transition-colors"
                 >
                   Hủy và quay lại
