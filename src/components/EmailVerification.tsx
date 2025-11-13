@@ -35,15 +35,15 @@ const EmailVerification = ({ email, onBack }: EmailVerificationProps) => {
     return () => clearInterval(timer)
   }, [])
 
-  const handleVerifyEmail = async () => {
-    // if (verificationCode.length !== 6) {
-    //   toast.error("Vui lòng nhập đầy đủ mã xác thực 6 số")
-    //   return
-    // }
-
+  const handleVerifyEmail = async (code: string) => {
+    if (code.length !== 6) {
+      toast.error("Vui lòng nhập đầy đủ mã xác thực 6 số")
+      return
+    }
+    console.log(code)
     setIsVerifying(true)
     try {
-      const res = await verifyEmail(email, verificationCode)
+      const res = await verifyEmail(email, code)
       const { success, message } = res.data
 
       if (success) {
@@ -75,10 +75,9 @@ const EmailVerification = ({ email, onBack }: EmailVerificationProps) => {
   }
 
   const handleResendCode = async () => {
-    if (countdown > 0) return
     await resendVerificationCode(email)
     toast.success("Mã xác thực mới đã được gửi đến email của bạn.")
-    setCountdown(600)
+    setCountdown(60 * minutes)
   }
 
   return (
@@ -127,7 +126,7 @@ const EmailVerification = ({ email, onBack }: EmailVerificationProps) => {
       </div>
 
       <button
-        onClick={handleVerifyEmail}
+        onClick={() => handleVerifyEmail(verificationCode)}
         disabled={
           isVerifying || verificationCode.length !== 6 || countdown === 0
         }
