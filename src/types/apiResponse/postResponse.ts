@@ -62,7 +62,7 @@ export type CreatePostPayload = {
 	harvestFrequency: number
 	treeQuantity: number
 	description: string
-	createMediaPostRequests?: CreateMediaPostRequest[]
+	media: CreateMediaPostRequest[]
 }
 
 export type CreatePostResponse = PostItem 

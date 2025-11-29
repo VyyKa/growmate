@@ -155,7 +155,7 @@ const FarmerNewPost = () => {
       const payload: CreatePostPayload = {
         farmerId,
         ...formData,
-        createMediaPostRequests: uploadedImages,
+        media: uploadedImages,
       }
 
       await createPost(payload)

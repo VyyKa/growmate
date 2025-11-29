@@ -52,7 +52,7 @@ const FarmerAdoptionDetail = () => {
     harvestFrequency: 0,
     treeQuantity: 0,
     description: "",
-    createMediaPostRequests: [
+    media: [
       {
         mediaUrl: "",
         mediaType: "",
@@ -116,11 +116,11 @@ const FarmerAdoptionDetail = () => {
             harvestFrequency: postData.harvestFrequency,
             treeQuantity: postData.treeQuantity,
             description: postData.description,
-            createMediaPostRequests: [
+            media: [
               {
                 mediaUrl:
                   postData.primaryImageUrl || postData.mainImageUrl || "",
-                mediaType: "Image",
+                mediaType: "IMAGE",
               },
             ],
           })
@@ -190,10 +190,10 @@ const FarmerAdoptionDetail = () => {
         harvestFrequency: post.harvestFrequency,
         treeQuantity: post.treeQuantity,
         description: post.description,
-        createMediaPostRequests: [
+        media: [
           {
             mediaUrl: post.primaryImageUrl || post.mainImageUrl || "",
-            mediaType: "Image",
+            mediaType: "IMAGE",
           },
         ],
       })
