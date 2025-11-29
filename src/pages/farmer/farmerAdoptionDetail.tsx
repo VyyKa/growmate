@@ -52,6 +52,12 @@ const FarmerAdoptionDetail = () => {
     harvestFrequency: 0,
     treeQuantity: 0,
     description: "",
+    createMediaPostRequests: [
+      {
+        mediaUrl: "",
+        mediaType: "",
+      },
+    ],
   })
 
   // Check if should auto-edit from URL params
@@ -110,6 +116,13 @@ const FarmerAdoptionDetail = () => {
             harvestFrequency: postData.harvestFrequency,
             treeQuantity: postData.treeQuantity,
             description: postData.description,
+            createMediaPostRequests: [
+              {
+                mediaUrl:
+                  postData.primaryImageUrl || postData.mainImageUrl || "",
+                mediaType: "Image",
+              },
+            ],
           })
         } else {
           toast.error("Không tìm thấy bài đăng")
@@ -177,6 +190,12 @@ const FarmerAdoptionDetail = () => {
         harvestFrequency: post.harvestFrequency,
         treeQuantity: post.treeQuantity,
         description: post.description,
+        createMediaPostRequests: [
+          {
+            mediaUrl: post.primaryImageUrl || post.mainImageUrl || "",
+            mediaType: "Image",
+          },
+        ],
       })
     }
     setIsEditing(false)
