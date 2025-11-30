@@ -36,6 +36,7 @@ import AdminProduct from "../pages/admin/adminProduct"
 import AdminReport from "../pages/admin/adminReport"
 import ProtectedRoute from "./ProtectedRoute"
 import { UserRole } from "../types/enums/UserRole"
+import AdminPostApprove from "../pages/admin/adminPostApprove"
 
 export default function AppRouter() {
   return (
@@ -94,6 +95,7 @@ export default function AppRouter() {
           <Route index element={<AdminHome />} />
           <Route path="users" element={<AdminUser />} />
           <Route path="products" element={<AdminProduct />} />
+          <Route path="posts" element={<AdminPostApprove />} />
           <Route path="reports" element={<AdminReport />} />
           <Route path="profile" element={<ProfilePage />} />
         </Route>

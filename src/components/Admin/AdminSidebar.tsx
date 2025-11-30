@@ -1,5 +1,11 @@
 import { NavLink } from "react-router-dom"
-import { LayoutDashboard, Users, Package, BarChart3 } from "lucide-react"
+import {
+  LayoutDashboard,
+  Users,
+  Package,
+  BarChart3,
+  Sprout,
+} from "lucide-react"
 import logoImg from "../../assets/Logo.png"
 
 const AdminSidebar = () => {
@@ -19,6 +25,11 @@ const AdminSidebar = () => {
       icon: Package,
       label: "Quản lý sản phẩm",
       path: "/admin/products",
+    },
+    {
+      icon: Sprout,
+      label: "Duyệt bài đăng",
+      path: "/admin/posts",
     },
     {
       icon: BarChart3,
