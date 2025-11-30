@@ -31,7 +31,13 @@ const Adopt = () => {
     fetchPage: async (page, pageSize) => {
       try {
         const res = await getPosts({ page, pageSize })
-        return { items: res.data.items, totalPages: res.data.totalPages }
+        const posts = res.data.items.filter(
+          (post) => post.status !== "PENDING" && post.status !== "CANCELLED"
+        )
+        return {
+          items: posts,
+          totalPages: res.data.totalPages,
+        }
       } catch (err) {
         toast.error("Không thể tải danh sách sản phẩm")
         throw err

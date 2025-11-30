@@ -40,7 +40,13 @@ const Product = () => {
     fetchPage: async (page, pageSize) => {
       try {
         const res = await getApprovedProducts({ page, pageSize })
-        return { items: res.data.items, totalPages: res.data.totalPages }
+        const products = res.data.items.filter(
+          (product) => product.status === "APPROVED"
+        )
+        return {
+          items: products,
+          totalPages: res.data.totalPages,
+        }
       } catch (err) {
         toast.error("Không thể tải danh sách sản phẩm")
         throw err
@@ -199,12 +205,12 @@ const Product = () => {
                   {cat.key === "all"
                     ? "Tất cả"
                     : cat.key === "tools"
-                      ? "Dụng cụ"
-                      : cat.key === "fertilizer"
-                        ? "Phân bón"
-                        : cat.key === "pots"
-                          ? "Chậu"
-                          : "Tưới"}
+                    ? "Dụng cụ"
+                    : cat.key === "fertilizer"
+                    ? "Phân bón"
+                    : cat.key === "pots"
+                    ? "Chậu"
+                    : "Tưới"}
                 </span>
               </button>
             ))}
