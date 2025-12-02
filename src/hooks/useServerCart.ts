@@ -18,7 +18,7 @@ const buildStateFromServer = (cart: CartDetail) => {
   const items: ReduxCartItem[] = cart.cartItems.map((ci: ServerCartItem) => {
     const isTree = (ci.listingId ?? 0) > 0 && (!ci.productId || ci.productId <= 0)
     const baseProductId = ci.productId ?? 0
-    const syntheticProductId = isTree ? -Math.abs(ci.cartItemId) : baseProductId
+    const syntheticProductId = isTree ? -Math.abs(Number(ci.listingId)) : baseProductId
     
     const item: ReduxCartItem = {
       productId: syntheticProductId,
@@ -60,7 +60,6 @@ export const useServerCart = () => {
       ))
 
       if (missingUnitProductIds.length > 0) {
-        try {
           const details = await Promise.all(
             missingUnitProductIds.map(async (id) => {
               try {
@@ -81,9 +80,6 @@ export const useServerCart = () => {
             }
             return it
           })
-        } catch {
-          // swallow enrichment errors
-        }
       }
 
       mappingRef.current = mapping

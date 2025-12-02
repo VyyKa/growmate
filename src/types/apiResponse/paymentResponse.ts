@@ -77,6 +77,7 @@ export const isMessageResponse = (data: unknown): data is MessageResponse => {
 // POST /api/Payment/qr
 export type CreatePaymentQrPayload = {
   orderId: number
+  amount: number
 }
 
 // Response shape returned by QR endpoint

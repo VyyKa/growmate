@@ -69,7 +69,6 @@ const AdoptDetail = () => {
         if (response?.data) {
           setPost(response.data)
         } else {
-          console.log(response)
           toast.error("Không tìm thấy sản phẩm")
           navigate("/adopt")
         }
@@ -136,23 +135,25 @@ const AdoptDetail = () => {
           firstMedia?.mediaUrl ||
           null
 
+        const productCart = {
+          productId: post.postId,
+          name: `${post.productName} - ${post.productVariety}`,
+          slug: `adopt-${post.postId}`,
+          price: post.pricePerYear,
+          stock: post.treeQuantity || 999,
+          status: post.status,
+          categoryName: post.productType,
+          unitName: "cây",
+          productTypeName: "Nhận nuôi",
+          farmerName: post.farmName,
+          mainImageUrl: imageUrl,
+        }
+        console.log(productCart)
         dispatch(
           addItem({
-            product: {
-              productId: post.postId,
-              name: `${post.productName} - ${post.productVariety}`,
-              slug: `adopt-${post.postId}`,
-              price: post.pricePerYear,
-              stock: post.treeQuantity || 999,
-              status: post.status,
-              categoryName: post.productType,
-              unitName: "cây",
-              productTypeName: "Nhận nuôi",
-              farmerName: post.farmName,
-              mainImageUrl: imageUrl,
-            },
-            quantity: quantity, // number of trees
-            years: FIXED_YEARS_ADOPT, // fixed years
+            product: productCart,
+            quantity: quantity,
+            years: FIXED_YEARS_ADOPT,
           })
         )
       }

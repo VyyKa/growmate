@@ -10,7 +10,6 @@ import { loadFromLocalStorage, saveToLocalStorage } from "../localStorage"
 const GUEST_CART_BACKUP_KEY = "guestCartBackup"
 
 const saveGuestBackup = (cart: CartState) => {
-  // Optional: keep a short TTL (e.g., 7 days) to avoid very old carts
   const sevenDaysMs = 7 * 24 * 60 * 60 * 1000
   saveToLocalStorage(GUEST_CART_BACKUP_KEY, cart, { expiresInMs: sevenDaysMs })
 }
@@ -26,7 +25,9 @@ const mapServerCartToState = (cart: CartDetail): CartState => {
   const items: ReduxCartItem[] = cart.cartItems.map((ci: ServerCartItem) => {
     const isTree = (ci.listingId ?? 0) > 0 && (!ci.productId || ci.productId <= 0)
     const baseProductId = ci.productId ?? 0
-    const syntheticProductId = isTree ? -Math.abs(ci.cartItemId) : baseProductId
+    const syntheticProductId = isTree ? -Math.abs(Number(ci.listingId)) : baseProductId
+    console.log(ci.listingId)
+    console.log(syntheticProductId)
     return {
       productId: syntheticProductId,
       name: ci.productName,
@@ -49,7 +50,6 @@ export const cartSyncMiddleware: Middleware<object, RootState> = (storeApi) => (
 
   // Login: auth/setCredentials
   if (typedAction?.type === "auth/setCredentials") {
-    try {
       const state = storeApi.getState()
       const guestCart = state.cart as CartState
       // Backup guest cart for later restore on logout
@@ -61,7 +61,6 @@ export const cartSyncMiddleware: Middleware<object, RootState> = (storeApi) => (
         
       // Merge guest items into server cart
       for (const item of guestCart.items) {
-        try {
           const isAdopt = typeof item.slug === "string" && item.slug.startsWith("adopt-")
           if (isAdopt) {
             // support slug formats: adopt-<postId> or adopt-<postId>-y<years>
@@ -80,25 +79,16 @@ export const cartSyncMiddleware: Middleware<object, RootState> = (storeApi) => (
           } else if (item.productId > 0) {
             await addItemToCart({ productId: item.productId, quantity: item.quantity })
           }
-        } catch {
-          // ignore individual item errors to continue merging
-        }
       }
 
       // Hydrate cart from server
-      try {
         const res = await getCurrentCart()
         const data = res.data as CartDetail
         if (data && Array.isArray(data.cartItems)) {
           const stateMapped = mapServerCartToState(data)
+          console.log(data)
           storeApi.dispatch(setCart(stateMapped))
         }
-      } catch {
-        // ignore hydrate errors
-      }
-    } catch {
-      // ignore merge-on-login failures
-    }
   }
 
   // Logout: auth/logout or auth/clearAuth

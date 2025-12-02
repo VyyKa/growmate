@@ -32,12 +32,15 @@ export const useVNPay = () => {
   /**
    * Tạo QR thanh toán cho order (SEPAY)
    */
-  const createQRPayment = async (orderId: number): Promise<VNPayPaymentResponse> => {
+  const createQRPayment = async (
+    orderId: number,
+    amount: number
+  ): Promise<VNPayPaymentResponse> => {
     setIsCreatingPayment(true)
     setError(null)
 
     try {
-      const response = await createPaymentQR({ orderId })
+      const response = await createPaymentQR({ orderId, amount })
       
       return {
         success: true,

@@ -12,6 +12,7 @@ import { PaymentStatus } from "../types/enums/PaymentStatus"
 import { clearCart, type CartState } from "../store/slices/cartSlice"
 import {
   addItemToCart,
+  addTreeListingToCart,
   getCurrentCart,
   removeCartItem,
 } from "../services/API/cartAPI"
@@ -20,16 +21,6 @@ import type { CartGetResponse } from "../types/apiResponse/cartResponse"
 import { isCartDetail } from "../types/apiResponse/cartResponse"
 import { loadFromLocalStorage } from "../store/localStorage"
 
-/**
- * QRCheckout Page - Hiển thị mã QR thanh toán SEPAY
- *
- * Features:
- * - Display QR code image from payment gateway
- * - Show order details and payment amount
- * - Countdown timer until QR expiration
- * - Auto-refresh payment status
- * - Redirect on successful payment
- */
 const QRCheckout = () => {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
@@ -60,21 +51,23 @@ const QRCheckout = () => {
     setError(null)
 
     try {
-      const response = await createQRPayment(Number(orderId))
+      // Fetch order details first to get total amount
+      let orderAmount = 0
+      try {
+        const orderResponse = await getOrderById(Number(orderId))
+        setOrderData(orderResponse.data)
+        orderAmount = orderResponse.data.totalAmount
+      } catch (orderError) {
+        console.error("Failed to fetch order details:", orderError)
+      }
+
+      const response = await createQRPayment(Number(orderId), orderAmount)
 
       if (!response.success || !response.qrData) {
         throw new Error(response.error || "Không thể tạo mã QR thanh toán")
       }
 
       setQrData(response.qrData)
-
-      // Fetch order details to get total amount
-      try {
-        const orderResponse = await getOrderById(Number(orderId))
-        setOrderData(orderResponse.data)
-      } catch (orderError) {
-        console.error("Failed to fetch order details:", orderError)
-      }
 
       // Calculate time remaining
       const expiryTime = new Date(response.qrData.expiresAt).getTime()
@@ -99,9 +92,10 @@ const QRCheckout = () => {
     try {
       const response = await getPaymentById(qrData.paymentId)
       const payment = response.data
+      console.log(payment)
 
       // If payment is completed, clear cart then redirect to success page
-      if (payment.status === PaymentStatus.SUCCESS) {
+      if (payment.status === "SUCCESS") {
         const res = await getCurrentCart()
         const data = res.data as CartGetResponse
         if (isCartDetail(data)) {
@@ -129,10 +123,18 @@ const QRCheckout = () => {
   const handleCancelButton = async () => {
     const data = loadFromLocalStorage<CartState>("cart") ?? { items: [] }
     for (const item of data.items) {
-      await addItemToCart({
-        productId: item.productId,
-        quantity: item.quantity,
-      })
+      if (item.productId < 0) {
+        await addTreeListingToCart({
+          listingId: item.productId * -1,
+          quantity: item.quantity,
+          years: 1,
+        })
+      } else {
+        await addItemToCart({
+          productId: item.productId,
+          quantity: item.quantity,
+        })
+      }
     }
     navigate(-1)
   }
