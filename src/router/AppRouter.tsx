@@ -25,6 +25,8 @@ import BlogDetailPage from "../pages/BlogDetailPage"
 import Homepage from "../pages/Homepage"
 import ProfilePage from "../pages/profile"
 import AdoptManagementPage from "../pages/adoptManagement"
+import OrderPage from "../pages/order"
+import OrderDetailPage from "../pages/orderDetail"
 import CameraPage from "../pages/camera"
 import FarmerHome from "../pages/farmer/farmerHome"
 import FarmerNewPost from "../pages/farmer/farmerNewPost"
@@ -67,6 +69,8 @@ export default function AppRouter() {
           <Route path="order/success" element={<OrderSuccessPage />} />
           <Route path="profile" element={<ProfilePage />} />
           <Route path="adopt-management" element={<AdoptManagementPage />} />
+          <Route path="orders" element={<OrderPage />} />
+          <Route path="orders/:orderId" element={<OrderDetailPage />} />
         </Route>
 
         <Route

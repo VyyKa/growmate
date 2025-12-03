@@ -36,7 +36,6 @@ export default function AdoptManagement() {
     setError(null)
 
     try {
-      // Fetch adoptions. Backend may return either envelope { success, data } or plain paged object
       const response = await getAdoptions({
         page: currentPage,
         pageSize: pageSize,

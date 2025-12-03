@@ -148,7 +148,6 @@ const AdoptDetail = () => {
           farmerName: post.farmName,
           mainImageUrl: imageUrl,
         }
-        console.log(productCart)
         dispatch(
           addItem({
             product: productCart,

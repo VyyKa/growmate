@@ -9,6 +9,7 @@ import ManagePlantIconSvg from "../assets/svgs/ManagePlantIconSvg"
 import { AnimatedDoorIconSvg } from "../assets/svgs/AnimatedDoorIconSvg"
 import { getRoleBasedPath } from "../hooks/useRoleBasedRedirect"
 import { UserRole } from "../types/enums/UserRole"
+import { ShoppingBag } from "lucide-react"
 
 const AvatarDropdown = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -65,6 +66,19 @@ const AvatarDropdown = () => {
             onClick: () => {
               setIsOpen(false)
               navigate("/adopt-management")
+            },
+          },
+          {
+            icon: (
+              <ShoppingBag
+                size={20}
+                className="text-gray-700 group-hover:text-main transition-colors duration-300"
+              />
+            ),
+            label: "Đơn hàng của tôi",
+            onClick: () => {
+              setIsOpen(false)
+              navigate("/orders")
             },
           },
         ]

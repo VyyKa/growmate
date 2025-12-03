@@ -26,8 +26,6 @@ const mapServerCartToState = (cart: CartDetail): CartState => {
     const isTree = (ci.listingId ?? 0) > 0 && (!ci.productId || ci.productId <= 0)
     const baseProductId = ci.productId ?? 0
     const syntheticProductId = isTree ? -Math.abs(Number(ci.listingId)) : baseProductId
-    console.log(ci.listingId)
-    console.log(syntheticProductId)
     return {
       productId: syntheticProductId,
       name: ci.productName,
@@ -86,7 +84,6 @@ export const cartSyncMiddleware: Middleware<object, RootState> = (storeApi) => (
         const data = res.data as CartDetail
         if (data && Array.isArray(data.cartItems)) {
           const stateMapped = mapServerCartToState(data)
-          console.log(data)
           storeApi.dispatch(setCart(stateMapped))
         }
   }

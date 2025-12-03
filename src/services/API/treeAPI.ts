@@ -6,7 +6,6 @@ import type { GetTreesParams, TreeListResponse } from "../../types/apiResponse/t
 // Supports filters: listingId, farmerId, (optionally treeId), and paging
 export const getTrees = async (params: GetTreesParams = {}) => {
 	const query = buildQuery({
-		treeId: params.treeId,
 		listingId: params.listingId,
 		farmerId: params.farmerId,
 		page: params.page ?? 1,
