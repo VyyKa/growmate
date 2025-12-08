@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
+import { toast } from "react-toastify"
 import { useAppSelector } from "../hooks/reduxHooks"
 import { selectCartItems, selectCartCount } from "../store/slices/cartSlice"
 import { selectIsLoggedIn } from "../store/slices/authSlice"
@@ -326,7 +327,7 @@ const CheckoutPage = () => {
                   title="Tài khoản ngân hàng nội địa"
                   description="Hỗ trợ ngân hàng có đăng ký Internet Banking"
                   isSelected={paymentMethod === "atm"}
-                  onClick={() => setPaymentMethod("atm")}
+                  onClick={() => toast.info("Tính năng đang được phát triển")}
                   icon={<VietNamBankIconSvg size={40} />}
                 />
               </div>

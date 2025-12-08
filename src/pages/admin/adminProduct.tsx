@@ -30,6 +30,7 @@ import type {
   ProductMediaInput,
 } from "../../types/apiResponse/productResponse"
 import CloudinaryUploadWidget from "../../components/CloudinaryUploadWidget"
+import { VerificationStatus } from "../../types/enums/VerificationStatus"
 
 const AdminProduct = () => {
   const [approvedProducts, setApprovedProducts] = useState<ProductItem[]>([])
@@ -350,21 +351,21 @@ const AdminProduct = () => {
 
   const getStatusBadge = (status: string) => {
     const lowerStatus = status.toLowerCase()
-    if (lowerStatus === "approved") {
+    if (lowerStatus === VerificationStatus.Approved) {
       return (
         <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
           <CheckCircle className="w-3 h-3" />
           Đã duyệt
         </span>
       )
-    } else if (lowerStatus === "pending") {
+    } else if (lowerStatus === VerificationStatus.Pending) {
       return (
         <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
           <Clock className="w-3 h-3" />
           Chờ duyệt
         </span>
       )
-    } else if (lowerStatus === "rejected") {
+    } else if (lowerStatus === VerificationStatus.Rejected) {
       return (
         <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
           <XCircle className="w-3 h-3" />
@@ -391,7 +392,7 @@ const AdminProduct = () => {
     approved: approvedProducts.length,
     pending: pendingProducts.length,
     rejected: [...approvedProducts, ...pendingProducts].filter(
-      (p) => p.status.toLowerCase() === "rejected"
+      (p) => p.status.toLowerCase() === VerificationStatus.Rejected
     ).length,
   }
 
