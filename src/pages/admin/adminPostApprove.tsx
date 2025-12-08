@@ -18,6 +18,10 @@ import {
 import { getPosts, updatePostStatus } from "../../services/API/postAPI"
 import type { PostItem } from "../../types/apiResponse/postResponse"
 import { toast } from "react-toastify"
+import {
+  VerificationStatus,
+  VerificationStatusAPI,
+} from "../../types/enums/VerificationStatus"
 
 const AdminPostApprove = () => {
   const [posts, setPosts] = useState<PostItem[]>([])
@@ -96,7 +100,7 @@ const AdminPostApprove = () => {
   const handleApprove = async (postId: number) => {
     try {
       setIsUpdating(true)
-      await updatePostStatus(postId, "APPROVED")
+      await updatePostStatus(postId, VerificationStatusAPI.Approved)
       toast.success("Duyệt bài đăng thành công!")
       fetchPosts()
       setIsModalOpen(false)
@@ -111,7 +115,7 @@ const AdminPostApprove = () => {
   const handleReject = async (postId: number) => {
     try {
       setIsUpdating(true)
-      await updatePostStatus(postId, "REJECTED")
+      await updatePostStatus(postId, VerificationStatusAPI.Rejected)
       toast.success("Từ chối bài đăng thành công!")
       fetchPosts()
       setIsModalOpen(false)
@@ -135,21 +139,21 @@ const AdminPostApprove = () => {
 
   const getStatusBadge = (status: string) => {
     const lowerStatus = status.toLowerCase()
-    if (lowerStatus === "approved") {
+    if (lowerStatus === VerificationStatus.Approved) {
       return (
         <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
           <CheckCircle className="w-3 h-3" />
           Đã duyệt
         </span>
       )
-    } else if (lowerStatus === "pending") {
+    } else if (lowerStatus === VerificationStatus.Pending) {
       return (
         <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
           <Clock className="w-3 h-3" />
           Chờ duyệt
         </span>
       )
-    } else if (lowerStatus === "rejected") {
+    } else if (lowerStatus === VerificationStatus.Rejected) {
       return (
         <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
           <XCircle className="w-3 h-3" />
@@ -184,9 +188,15 @@ const AdminPostApprove = () => {
 
   const stats = {
     total: posts.length,
-    approved: posts.filter((p) => p.status.toLowerCase() === "approved").length,
-    pending: posts.filter((p) => p.status.toLowerCase() === "pending").length,
-    rejected: posts.filter((p) => p.status.toLowerCase() === "rejected").length,
+    approved: posts.filter(
+      (p) => p.status.toLowerCase() === VerificationStatus.Approved
+    ).length,
+    pending: posts.filter(
+      (p) => p.status.toLowerCase() === VerificationStatus.Pending
+    ).length,
+    rejected: posts.filter(
+      (p) => p.status.toLowerCase() === VerificationStatus.Rejected
+    ).length,
   }
 
   if (isLoading) {

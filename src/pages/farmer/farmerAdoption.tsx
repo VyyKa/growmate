@@ -1,21 +1,19 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
-import {
-  Sprout,
-  Filter,
-  Search,
-  Calendar,
-  TreeDeciduous,
-  Plus,
-} from "lucide-react"
+import { Sprout, Search, TreeDeciduous, Plus } from "lucide-react"
 import { useAppSelector } from "../../hooks/reduxHooks"
 import { getPosts, deletePost } from "../../services/API/postAPI"
 import { getUsers } from "../../services/API/userAPI"
 import FarmerTreeCard from "../../components/Farmer/FarmerTreeCard"
 import Pagination from "../../components/Pagination"
+import CustomSelect from "../../components/CustomSelect"
 import type { PostItem } from "../../types/apiResponse/postResponse"
 import { getErrorMessage } from "../../hooks/getErrorMessage"
+import {
+  VerificationStatus,
+  getVerificationStatusText,
+} from "../../types/enums/VerificationStatus"
 
 const FarmerAdoption = () => {
   const navigate = useNavigate()
@@ -118,14 +116,30 @@ const FarmerAdoption = () => {
 
     // Apply status filter
     if (statusFilter !== "all") {
-      filtered = filtered.filter((post) => post.status === statusFilter)
+      filtered = filtered.filter(
+        (post) => post.status.toLowerCase() === statusFilter.toLowerCase()
+      )
     }
 
     setFilteredPosts(filtered)
   }, [searchQuery, statusFilter, posts])
 
-  // Get unique statuses for filter
-  const availableStatuses = Array.from(new Set(posts.map((p) => p.status)))
+  // Status filter options from VerificationStatus enum
+  const statusOptions = [
+    { label: "Tất cả trạng thái", value: "all" },
+    {
+      label: getVerificationStatusText(VerificationStatus.Pending),
+      value: VerificationStatus.Pending,
+    },
+    {
+      label: getVerificationStatusText(VerificationStatus.Approved),
+      value: VerificationStatus.Approved,
+    },
+    {
+      label: getVerificationStatusText(VerificationStatus.Rejected),
+      value: VerificationStatus.Rejected,
+    },
+  ]
 
   // Handle edit post
   const handleEdit = (postId: number) => {
@@ -232,21 +246,13 @@ const FarmerAdoption = () => {
             </div>
 
             {/* Status Filter */}
-            <div className="relative lg:w-64">
-              <Filter className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-              <select
+            <div className="lg:w-72">
+              <CustomSelect
+                label="Trạng thái"
                 value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:border-[var(--color-main)] focus:ring-2 focus:ring-[var(--color-main)]/20 outline-none transition-all duration-200 appearance-none bg-white cursor-pointer"
-              >
-                <option value="all">Tất cả trạng thái</option>
-                {availableStatuses.map((status) => (
-                  <option key={status} value={status}>
-                    {status}
-                  </option>
-                ))}
-              </select>
-              <Calendar className="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
+                onChange={setStatusFilter}
+                options={statusOptions}
+              />
             </div>
           </div>
 
@@ -269,7 +275,7 @@ const FarmerAdoption = () => {
               )}
               {statusFilter !== "all" && (
                 <span className="px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-sm font-semibold flex items-center gap-2">
-                  Trạng thái: {statusFilter}
+                  Trạng thái: {getVerificationStatusText(statusFilter)}
                   <button
                     onClick={() => setStatusFilter("all")}
                     className="hover:bg-emerald-200 rounded-full p-0.5 transition-colors"

@@ -17,7 +17,9 @@ import {
   CheckCircle,
   XCircle,
   Clock,
+  Trash2,
 } from "lucide-react"
+import CloudinaryUploadWidget from "../../components/CloudinaryUploadWidget"
 import { getPostById, updatePost } from "../../services/API/postAPI"
 import { getUsers } from "../../services/API/userAPI"
 import { useAppSelector } from "../../hooks/reduxHooks"
@@ -26,6 +28,11 @@ import type {
   UpdatePostPayload,
 } from "../../types/apiResponse/postResponse"
 import { getErrorMessage } from "../../hooks/getErrorMessage"
+import {
+  VerificationStatus,
+  getVerificationStatusColor,
+  getVerificationStatusText,
+} from "../../types/enums/VerificationStatus"
 
 const FarmerAdoptionDetail = () => {
   const navigate = useNavigate()
@@ -38,6 +45,7 @@ const FarmerAdoptionDetail = () => {
   const [isEditing, setIsEditing] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
   const [farmerId, setFarmerId] = useState<number | null>(null)
+  const [isImageHovered, setIsImageHovered] = useState(false)
 
   // Form state
   const [formData, setFormData] = useState({
@@ -219,42 +227,16 @@ const FarmerAdoptionDetail = () => {
     })
   }
 
-  const getStatusColor = (status: string) => {
-    switch (status.toLowerCase()) {
-      case "approved":
-        return "bg-green-100 text-green-800 border-green-300"
-      case "pending":
-        return "bg-yellow-100 text-yellow-800 border-yellow-300"
-      case "rejected":
-        return "bg-red-100 text-red-800 border-red-300"
-      default:
-        return "bg-gray-100 text-gray-800 border-gray-300"
-    }
-  }
-
   const getStatusIcon = (status: string) => {
     switch (status.toLowerCase()) {
-      case "approved":
+      case VerificationStatus.Approved:
         return <CheckCircle className="w-5 h-5" />
-      case "pending":
+      case VerificationStatus.Pending:
         return <Clock className="w-5 h-5" />
-      case "rejected":
+      case VerificationStatus.Rejected:
         return <XCircle className="w-5 h-5" />
       default:
         return <Clock className="w-5 h-5" />
-    }
-  }
-
-  const getStatusText = (status: string) => {
-    switch (status.toLowerCase()) {
-      case "approved":
-        return "Đã duyệt"
-      case "pending":
-        return "Chờ duyệt"
-      case "rejected":
-        return "Bị từ chối"
-      default:
-        return status
     }
   }
 
@@ -326,7 +308,7 @@ const FarmerAdoptionDetail = () => {
 
         {/* Status Banner */}
         <div
-          className={`${getStatusColor(
+          className={`${getVerificationStatusColor(
             post.status
           )} border-2 rounded-xl p-4 mb-6 flex items-center justify-between`}
         >
@@ -334,7 +316,7 @@ const FarmerAdoptionDetail = () => {
             {getStatusIcon(post.status)}
             <div>
               <p className="font-semibold text-lg">
-                Trạng thái: {getStatusText(post.status)}
+                Trạng thái: {getVerificationStatusText(post.status)}
               </p>
               <p className="text-sm opacity-80">
                 Mã bài đăng: #{post.postId.toString().padStart(3, "0")}
@@ -351,10 +333,21 @@ const FarmerAdoptionDetail = () => {
           {/* Left Column - Image */}
           <div className="lg:col-span-1">
             <div className="bg-white rounded-2xl shadow-lg overflow-hidden sticky top-6">
-              <div className="relative h-80 bg-gradient-to-br from-green-100 via-emerald-50 to-green-100">
-                {post.primaryImageUrl || post.mainImageUrl ? (
+              <div
+                className="relative h-80 bg-gradient-to-br from-green-100 via-emerald-50 to-green-100"
+                onMouseEnter={() => setIsImageHovered(true)}
+                onMouseLeave={() => setIsImageHovered(false)}
+              >
+                {/* Display current image or form image */}
+                {(isEditing ? formData.media[0]?.mediaUrl : null) ||
+                post.primaryImageUrl ||
+                post.mainImageUrl ? (
                   <img
-                    src={post.primaryImageUrl || post.mainImageUrl}
+                    src={
+                      (isEditing ? formData.media[0]?.mediaUrl : null) ||
+                      post.primaryImageUrl ||
+                      post.mainImageUrl
+                    }
                     alt={post.productName}
                     className="w-full h-full object-cover"
                   />
@@ -363,10 +356,64 @@ const FarmerAdoptionDetail = () => {
                     <ImageIcon className="w-24 h-24 text-gray-300" />
                   </div>
                 )}
+
+                {/* Edit overlay - shows on hover when editing */}
+                {isEditing && isImageHovered && (
+                  <div className="absolute inset-0 bg-black/50 flex items-center justify-center transition-all duration-300">
+                    <div className="flex flex-col items-center gap-3">
+                      <CloudinaryUploadWidget
+                        onUploaded={(result) => {
+                          setFormData((prev) => ({
+                            ...prev,
+                            media: [
+                              {
+                                mediaUrl: result.url,
+                                mediaType: "IMAGE",
+                              },
+                            ],
+                          }))
+                          toast.success("Tải ảnh lên thành công!")
+                        }}
+                        accept="image/*"
+                        showAsButton
+                        className="w-16 h-16"
+                      />
+                      <p className="text-white text-sm font-medium">
+                        Nhấn để đổi ảnh
+                      </p>
+                      {formData.media[0]?.mediaUrl &&
+                        formData.media[0]?.mediaUrl !==
+                          (post.primaryImageUrl || post.mainImageUrl) && (
+                          <button
+                            onClick={() => {
+                              setFormData((prev) => ({
+                                ...prev,
+                                media: [
+                                  {
+                                    mediaUrl:
+                                      post.primaryImageUrl ||
+                                      post.mainImageUrl ||
+                                      "",
+                                    mediaType: "IMAGE",
+                                  },
+                                ],
+                              }))
+                              toast.info("Đã khôi phục ảnh gốc")
+                            }}
+                            className="flex items-center gap-2 px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white text-sm rounded-full transition-colors"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                            Khôi phục ảnh gốc
+                          </button>
+                        )}
+                    </div>
+                  </div>
+                )}
+
                 <div className="absolute top-4 right-4 bg-white/95 backdrop-blur-sm rounded-full px-4 py-2 shadow-md flex items-center gap-2">
                   <TreePine className="w-5 h-5 text-[var(--color-main)]" />
                   <span className="font-bold text-gray-900">
-                    {post.treeQuantity} cây
+                    {isEditing ? formData.treeQuantity : post.treeQuantity} cây
                   </span>
                 </div>
               </div>

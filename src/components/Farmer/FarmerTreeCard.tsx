@@ -2,6 +2,10 @@ import { useNavigate } from "react-router-dom"
 import { MoreVertical, Edit, Trash2, Eye, TreePine } from "lucide-react"
 import { useState, useRef, useEffect } from "react"
 import type { PostItem } from "../../types/apiResponse/postResponse"
+import {
+  getVerificationStatusColor,
+  getVerificationStatusText,
+} from "../../types/enums/VerificationStatus"
 
 interface FarmerTreeCardProps {
   post: PostItem
@@ -39,32 +43,6 @@ export default function FarmerTreeCard({
       style: "currency",
       currency: "VND",
     }).format(price)
-  }
-
-  const getStatusColor = (status: string) => {
-    switch (status.toLowerCase()) {
-      case "approved":
-        return "bg-green-100 text-green-800 border-green-300"
-      case "pending":
-        return "bg-yellow-100 text-yellow-800 border-yellow-300"
-      case "rejected":
-        return "bg-red-100 text-red-800 border-red-300"
-      default:
-        return "bg-gray-100 text-gray-800 border-gray-300"
-    }
-  }
-
-  const getStatusText = (status: string) => {
-    switch (status.toLowerCase()) {
-      case "approved":
-        return "Đã duyệt"
-      case "pending":
-        return "Chờ duyệt"
-      case "rejected":
-        return "Bị từ chối"
-      default:
-        return status
-    }
   }
 
   // Handle edit post
@@ -116,11 +94,11 @@ export default function FarmerTreeCard({
               </h3>
               <div className="flex items-center gap-2">
                 <span
-                  className={`px-4 py-1.5 rounded-full text-xs font-bold border-2 whitespace-nowrap shadow-sm ${getStatusColor(
+                  className={`px-4 py-1.5 rounded-full text-xs font-bold border-2 whitespace-nowrap shadow-sm ${getVerificationStatusColor(
                     post.status
                   )}`}
                 >
-                  {getStatusText(post.status)}
+                  {getVerificationStatusText(post.status)}
                 </span>
 
                 {/* Menu Dropdown */}
