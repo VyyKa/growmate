@@ -37,6 +37,7 @@ export default function AdoptManagement() {
 
     try {
       const response = await getAdoptions({
+        customerId: user.userId,
         page: currentPage,
         pageSize: pageSize,
       })
