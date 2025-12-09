@@ -28,9 +28,10 @@ export type UserWithRelations = User & {
 
 export type UsersListResponse = {
   items: UserWithRelations[]
-  page: number
+  totalItems: number
+  pageNumber: number
   pageSize: number
-  total: number
+  totalPages: number
 }
 
 export default {} as const

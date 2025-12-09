@@ -33,6 +33,7 @@ type UserListItem = UserWithRelations
 
 const AdminUser = () => {
   const [users, setUsers] = useState<UserListItem[]>([])
+  const [totalUsers, setTotalUsers] = useState<number>(0)
   const [filteredUsers, setFilteredUsers] = useState<UserListItem[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState("")
@@ -45,6 +46,10 @@ const AdminUser = () => {
     "create"
   )
   const [selectedUser, setSelectedUser] = useState<UserListItem | null>(null)
+
+  // Delete modal state
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const [userToDelete, setUserToDelete] = useState<UserListItem | null>(null)
 
   // Form state
   const [formData, setFormData] = useState({
@@ -68,7 +73,7 @@ const AdminUser = () => {
   // Pagination
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
-  const pageSize = 10
+  const pageSize = 12
 
   // Fetch users
   const fetchUsers = async () => {
@@ -77,8 +82,9 @@ const AdminUser = () => {
       const response = await getUsers({ page: currentPage, pageSize })
       if ("items" in response) {
         setUsers(response.items)
+        setTotalUsers(response.totalItems)
         setFilteredUsers(response.items)
-        setTotalPages(Math.ceil(response.total / pageSize))
+        setTotalPages(response.totalPages)
       } else {
         setUsers([response])
         setFilteredUsers([response])
@@ -281,22 +287,28 @@ const AdminUser = () => {
 
   // Handle delete (soft delete)
   const handleDelete = async (user: UserListItem) => {
-    if (
-      !window.confirm(
-        `Bạn có chắc chắn muốn vô hiệu hóa user "${user.fullName}"?`
-      )
-    ) {
-      return
-    }
+    setUserToDelete(user)
+    setIsDeleteModalOpen(true)
+  }
+
+  const confirmDelete = async () => {
+    if (!userToDelete) return
 
     try {
-      await updateUserByAdmin(user.userId, { isActive: false })
+      await updateUserByAdmin(userToDelete.userId, { isActive: false })
       toast.success("Vô hiệu hóa user thành công!")
+      setIsDeleteModalOpen(false)
+      setUserToDelete(null)
       fetchUsers()
     } catch (error) {
       console.error("Failed to delete user:", error)
       toast.error(getErrorMessage(error, "Vô hiệu hóa user thất bại"))
     }
+  }
+
+  const cancelDelete = () => {
+    setIsDeleteModalOpen(false)
+    setUserToDelete(null)
   }
 
   return (
@@ -327,13 +339,7 @@ const AdminUser = () => {
       <div className="flex flex-wrap gap-4">
         <div className="flex-1 min-w-[200px] bg-white rounded-xl shadow-md p-4 border-l-4 border-blue-500">
           <p className="text-sm text-gray-600 mb-1">Tổng user</p>
-          <p className="text-2xl font-bold text-gray-900">{users.length}</p>
-        </div>
-        <div className="flex-1 min-w-[200px] bg-white rounded-xl shadow-md p-4 border-l-4 border-green-500">
-          <p className="text-sm text-gray-600 mb-1">Đang hoạt động</p>
-          <p className="text-2xl font-bold text-gray-900">
-            {users.filter((u) => u.isActive).length}
-          </p>
+          <p className="text-2xl font-bold text-gray-900">{totalUsers}</p>
         </div>
         <div className="flex-1 min-w-[200px] bg-white rounded-xl shadow-md p-4 border-l-4 border-red-500">
           <p className="text-sm text-gray-600 mb-1">Đã vô hiệu hóa</p>
@@ -878,6 +884,77 @@ const AdminUser = () => {
                 </button>
               </div>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {isDeleteModalOpen && userToDelete && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md">
+            {/* Modal Header */}
+            <div className="bg-red-50 border-b border-red-100 px-6 py-4 rounded-t-2xl">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-red-100 rounded-lg">
+                  <Trash2 className="w-6 h-6 text-red-600" />
+                </div>
+                <h2 className="text-xl font-bold text-gray-900">
+                  Xác nhận vô hiệu hóa
+                </h2>
+              </div>
+            </div>
+
+            {/* Modal Body */}
+            <div className="p-6 space-y-4">
+              <div className="flex items-start gap-3">
+                <div className="flex-shrink-0 w-12 h-12 rounded-full overflow-hidden bg-gray-100">
+                  {userToDelete.profileImageUrl ? (
+                    <img
+                      src={userToDelete.profileImageUrl}
+                      alt={userToDelete.fullName}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-400 to-blue-600 text-white font-bold text-lg">
+                      {userToDelete.fullName.charAt(0).toUpperCase()}
+                    </div>
+                  )}
+                </div>
+                <div className="flex-1">
+                  <p className="text-gray-700 font-medium">
+                    {userToDelete.fullName}
+                  </p>
+                  <p className="text-sm text-gray-500">{userToDelete.email}</p>
+                </div>
+              </div>
+
+              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                <p className="text-sm text-gray-700">
+                  Bạn có chắc chắn muốn vô hiệu hóa user này không?
+                </p>
+                <p className="text-sm text-gray-600 mt-2">
+                  User sẽ không thể đăng nhập vào hệ thống sau khi bị vô hiệu
+                  hóa.
+                </p>
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="px-6 py-4 bg-gray-50 rounded-b-2xl flex items-center justify-end gap-3">
+              <button
+                onClick={cancelDelete}
+                className="px-5 py-2.5 border-2 border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-100 transition-colors"
+              >
+                Hủy
+              </button>
+              <button
+                onClick={confirmDelete}
+                className="px-5 py-2.5 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition-all shadow-md hover:shadow-lg flex items-center gap-2"
+              >
+                <Trash2 className="w-5 h-5" />
+                Vô hiệu hóa
+              </button>
+            </div>
           </div>
         </div>
       )}

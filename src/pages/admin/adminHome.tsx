@@ -1,30 +1,68 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import {
   Users,
   TreePine,
   Package,
   DollarSign,
-  TrendingUp,
-  TrendingDown,
   Activity,
   Calendar,
+  Loader2,
 } from "lucide-react"
 import RevenueChart from "../../components/Admin/RevenueChart"
+import { getUsers } from "../../services/API/userAPI"
+import { getTrees } from "../../services/API/treeAPI"
+import { getPayments } from "../../services/API/paymentAPI"
+import type { UsersListResponse } from "../../types/apiResponse/userResponse"
+import { UserRole } from "../../types/enums/UserRole"
 
 const AdminHome = () => {
   const navigate = useNavigate()
+  const [isLoading, setIsLoading] = useState(true)
 
-  const [stats] = useState({
-    totalUsers: 1245,
-    userGrowth: 12.5,
-    totalTrees: 3420,
-    treeGrowth: 8.3,
-    totalOrders: 892,
-    orderGrowth: -3.2,
-    totalRevenue: 45678000,
-    revenueGrowth: 15.7,
+  const [stats, setStats] = useState({
+    totalUsers: 0,
+    totalTrees: 0,
+    totalRevenue: 0,
   })
+
+  // Fetch stats from API
+  useEffect(() => {
+    const fetchStats = async () => {
+      setIsLoading(true)
+      try {
+        const [usersRes, treesRes, paymentsRes] = await Promise.all([
+          getUsers({ page: 1, pageSize: 1000 }),
+          getTrees({ page: 1, pageSize: 1000 }),
+          getPayments({ page: 1, pageSize: 1000 }),
+        ])
+
+        const usersData = usersRes as UsersListResponse
+        const totalUsers =
+          usersData.items?.filter((u) => u.role === UserRole.Customer).length ||
+          0
+        const totalTrees = treesRes.data?.totalItems || 0
+
+        // Calculate total revenue from SUCCESS payments only
+        const payments = paymentsRes.data?.items || []
+        const totalRevenue = payments
+          .filter((p) => p.status?.toUpperCase() === "SUCCESS")
+          .reduce((sum, p) => sum + (p.amount || 0), 0)
+
+        setStats({
+          totalUsers,
+          totalTrees,
+          totalRevenue,
+        })
+      } catch (error) {
+        console.error("Failed to fetch stats:", error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchStats()
+  }, [])
 
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat("vi-VN", {
@@ -35,9 +73,8 @@ const AdminHome = () => {
 
   const statCards = [
     {
-      title: "Tổng người dùng",
-      value: stats.totalUsers.toLocaleString(),
-      growth: stats.userGrowth,
+      title: "Tổng khách hàng",
+      value: isLoading ? "..." : stats.totalUsers.toLocaleString(),
       icon: Users,
       color: "from-blue-500 to-blue-600",
       bgLight: "bg-blue-50",
@@ -45,26 +82,15 @@ const AdminHome = () => {
     },
     {
       title: "Tổng cây trồng",
-      value: stats.totalTrees.toLocaleString(),
-      growth: stats.treeGrowth,
+      value: isLoading ? "..." : stats.totalTrees.toLocaleString(),
       icon: TreePine,
       color: "from-green-500 to-green-600",
       bgLight: "bg-green-50",
       textColor: "text-green-600",
     },
     {
-      title: "Tổng đơn hàng",
-      value: stats.totalOrders.toLocaleString(),
-      growth: stats.orderGrowth,
-      icon: Package,
-      color: "from-purple-500 to-purple-600",
-      bgLight: "bg-purple-50",
-      textColor: "text-purple-600",
-    },
-    {
       title: "Tổng doanh thu",
-      value: formatCurrency(stats.totalRevenue),
-      growth: stats.revenueGrowth,
+      value: isLoading ? "..." : formatCurrency(stats.totalRevenue),
       icon: DollarSign,
       color: "from-amber-500 to-amber-600",
       bgLight: "bg-amber-50",
@@ -112,7 +138,7 @@ const AdminHome = () => {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {statCards.map((stat, index) => (
           <div
             key={index}
@@ -123,26 +149,13 @@ const AdminHome = () => {
                 <p className="text-sm text-gray-600 font-medium mb-2">
                   {stat.title}
                 </p>
-                <h3 className="text-2xl font-bold text-gray-900 mb-3">
-                  {stat.value}
-                </h3>
-                <div className="flex items-center gap-1">
-                  {stat.growth >= 0 ? (
-                    <TrendingUp className="w-4 h-4 text-green-500" />
+                <h3 className="text-2xl font-bold text-gray-900">
+                  {isLoading ? (
+                    <Loader2 className="w-6 h-6 animate-spin text-gray-400" />
                   ) : (
-                    <TrendingDown className="w-4 h-4 text-red-500" />
+                    stat.value
                   )}
-                  <span
-                    className={`text-sm font-semibold ${
-                      stat.growth >= 0 ? "text-green-600" : "text-red-600"
-                    }`}
-                  >
-                    {Math.abs(stat.growth)}%
-                  </span>
-                  <span className="text-xs text-gray-500 ml-1">
-                    so với tháng trước
-                  </span>
-                </div>
+                </h3>
               </div>
               <div
                 className={`p-3 rounded-xl bg-gradient-to-br ${stat.color} shadow-lg`}
