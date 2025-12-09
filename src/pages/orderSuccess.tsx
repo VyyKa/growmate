@@ -1,4 +1,4 @@
-import { useSearchParams, useNavigate } from "react-router-dom"
+import { useSearchParams, useNavigate, useLocation } from "react-router-dom"
 import Breadcrumb from "../components/Breadcrumb"
 import { formatPrice } from "../utils/helpers/priceHelpers"
 import CheckCircleIconSvg from "../assets/svgs/CheckCircleIconSvg"
@@ -6,10 +6,14 @@ import CheckCircleIconSvg from "../assets/svgs/CheckCircleIconSvg"
 const OrderSuccessPage = () => {
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
+  const location = useLocation()
 
-  const orderCode = searchParams.get("orderCode") || "N/A"
-  const total = Number(searchParams.get("total") || 0)
-  const status = searchParams.get("status") || "success" // success | failed
+  // Try to get data from location.state (used for trial orders)
+  const stateData = location.state as { orderCode?: string; total?: number; status?: string } | null
+
+  const orderCode = stateData?.orderCode || searchParams.get("orderCode") || "N/A"
+  const total = stateData?.total ?? Number(searchParams.get("total") || 0)
+  const status = stateData?.status || searchParams.get("status") || "success" // success | failed
   const errorMessage = "Đã có lỗi xảy ra trong quá trình xử lý đơn hàng"
 
   // Check if order failed

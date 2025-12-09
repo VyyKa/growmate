@@ -39,6 +39,7 @@ import AdminReport from "../pages/admin/adminReport"
 import ProtectedRoute from "./ProtectedRoute"
 import { UserRole } from "../types/enums/UserRole"
 import AdminPostApprove from "../pages/admin/adminPostApprove"
+import TrialPage from "../pages/trial"
 
 export default function AppRouter() {
   return (
@@ -61,6 +62,7 @@ export default function AppRouter() {
           <Route path="about" element={<AboutPage />} />
           <Route path="contact" element={<ContactPage />} />
           <Route path="policy" element={<PolicyPage />} />
+          <Route path="trial" element={<TrialPage />} />
           <Route path="cart" element={<CartPage />} />
           <Route path="checkout" element={<CheckoutPage />} />
           <Route path="checkout/review" element={<CheckoutReviewPage />} />

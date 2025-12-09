@@ -6,6 +6,7 @@ import NavBar from "./NavBar"
 import { useAppSelector } from "../hooks/reduxHooks"
 import { selectIsLoggedIn } from "../store/slices/authSlice"
 import { useNavigate } from "react-router-dom"
+import TrialButton from "./TrialButton"
 
 const Header = () => {
   const isLoggedIn = useAppSelector(selectIsLoggedIn)
@@ -25,6 +26,7 @@ const Header = () => {
 
         {/* Contact Button & Login Button or Avatar Dropdown */}
         <div className="flex items-center gap-4">
+          <TrialButton />
           <ContactButton />
           {isLoggedIn ? <AvatarDropdown /> : <LoginButton />}
         </div>

@@ -163,6 +163,7 @@ const Adopt = () => {
         ) : (
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+              {/* Trial Package - Only show on first page */}
               {items.map((post) => {
                 const firstMedia =
                   post.media && post.media.length > 0
@@ -205,17 +206,17 @@ const Adopt = () => {
 
             {inSearchMode
               ? filteredItems.length === 0 &&
-                !loading && (
-                  <div className="text-center py-20 text-gray-500">
-                    Không tìm thấy kết quả phù hợp
-                  </div>
-                )
+              !loading && (
+                <div className="text-center py-20 text-gray-500">
+                  Không tìm thấy kết quả phù hợp
+                </div>
+              )
               : rawPageItems.length === 0 &&
-                !loading && (
-                  <div className="text-center py-20 text-gray-500">
-                    Không có sản phẩm nào
-                  </div>
-                )}
+              !loading && (
+                <div className="text-center py-20 text-gray-500">
+                  Không có sản phẩm nào
+                </div>
+              )}
           </>
         )}
       </section>

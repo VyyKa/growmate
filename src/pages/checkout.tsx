@@ -1,10 +1,12 @@
 import { useMemo, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
+import { saveTrialAdoption } from "../utils/localStorageMock"
 import { useAppSelector } from "../hooks/reduxHooks"
 import { selectCartItems, selectCartCount } from "../store/slices/cartSlice"
 import { selectIsLoggedIn } from "../store/slices/authSlice"
 import { formatPrice } from "../utils/helpers/priceHelpers"
+import { TRIAL_DURATION_DAYS } from "../utils/constants/trialPackage"
 import Breadcrumb from "../components/Breadcrumb"
 import CustomInput from "../components/CustomInput"
 import CustomSelect from "../components/CustomSelect"
@@ -38,11 +40,41 @@ const CheckoutPage = () => {
     years?: number
   }
   const buyNowItem = location.state?.buyNowItem as BuyNowItem | undefined
+  // Trial data passed from Adopt page
+  type TrialTreePayload = {
+    treeId: number
+    treeName: string
+    farmerName: string
+    farmerId?: number
+    listingId?: number
+    pricePerYear: number
+    unit?: string
+    description?: string
+    image?: string
+  }
+  const trialData = location.state?.isTrial
+    ? (location.state?.tree as TrialTreePayload)
+    : undefined
+
+  const sanitizeName = (name: string) => name.replace(/\(demo\)/i, "").trim()
 
   const displayItems = useMemo(() => {
     if (buyNowItem) return [buyNowItem]
+    if (trialData) {
+      // Convert trial data to a compatible item shape
+      const trialItem: BuyNowItem = {
+        productId: trialData.treeId,
+        name: sanitizeName(trialData.treeName),
+        price: trialData.pricePerYear,
+        unitName: trialData.unit || "",
+        imageUrl: trialData.image || "",
+        quantity: 1,
+        years: 0,
+      }
+      return [trialItem]
+    }
     return cartItems
-  }, [buyNowItem, cartItems])
+  }, [buyNowItem, trialData, cartItems])
 
   const displayCount = useMemo(
     () => displayItems.reduce((sum, i) => sum + (i.quantity || 0), 0),
@@ -119,6 +151,47 @@ const CheckoutPage = () => {
 
     setErrors({})
 
+    // If this is a trial order, bypass real payment and store locally
+    if (trialData) {
+      // Construct a mock adoption item compatible with our API shape
+      const adoption = {
+        adoptionId: Date.now(),
+        treeId: trialData.treeId,
+        listingId: trialData.listingId ?? 9999,
+        farmerId: trialData.farmerId ?? 0,
+        treeName: trialData.treeName,
+        farmerName: trialData.farmerName,
+        uniqueCode: "TRIAL-" + Date.now(),
+        description: trialData.description || "Trial package",
+        coordinates: "",
+        healthStatus: "HEALTHY",
+        availabilityStatus: "AVAILABLE",
+        startDate: new Date().toISOString(),
+        endDate: new Date(
+          Date.now() + TRIAL_DURATION_DAYS * 24 * 60 * 60 * 1000
+        ).toISOString(),
+        primaryImageUrl: trialData.image || "",
+        pricePerYear: trialData.pricePerYear,
+        years: 0,
+        totalPrice: trialData.pricePerYear,
+        postCode: "",
+        postId: 0,
+        status: "TRIAL",
+        createdAt: new Date().toISOString(),
+      } as any
+      saveTrialAdoption(adoption)
+      // Navigate to success page with mock order data
+      navigate("/order/success", {
+        state: {
+          orderCode: "TRIAL-" + Date.now(),
+          total: trialData.pricePerYear,
+          status: "success",
+        },
+      })
+      return
+    }
+
+    // Normal flow for regular purchases
     navigate("/checkout/review", {
       state: {
         shipping: shippingForm,
