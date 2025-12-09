@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react"
+import { useState, useMemo } from "react"
 import {
   Line,
   AreaChart,
@@ -11,8 +11,6 @@ import {
   Legend,
 } from "recharts"
 import { Loader2 } from "lucide-react"
-import { getPayments } from "../../services/API/paymentAPI"
-import type { PaymentResponse } from "../../types/apiResponse/paymentResponse"
 
 type ChartPeriod = "7days" | "30days" | "90days"
 
@@ -28,148 +26,32 @@ interface RevenueChartProps {
 
 const RevenueChart = ({ className = "" }: RevenueChartProps) => {
   const [period, setPeriod] = useState<ChartPeriod>("7days")
-  const [payments, setPayments] = useState<PaymentResponse[]>([])
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading] = useState(false)
 
-  // Fetch payments from API
-  useEffect(() => {
-    const fetchPayments = async () => {
-      setIsLoading(true)
-      try {
-        const res = await getPayments({ page: 1, pageSize: 1000 })
-        const allPayments = res.data?.items || []
-        // Only SUCCESS payments
-        const successPayments = allPayments.filter(
-          (p) => p.status?.toUpperCase() === "SUCCESS"
-        )
-        setPayments(successPayments)
-      } catch (error) {
-        console.error("Failed to fetch payments:", error)
-      } finally {
-        setIsLoading(false)
-      }
-    }
+  const MOCK_DATA: Record<ChartPeriod, ChartDataPoint[]> = {
+    "7days": [
+      { date: "T2", revenue: 300_000, orders: 1 },
+      { date: "T3", revenue: 800_000, orders: 3 },
+      { date: "T4", revenue: 500_000, orders: 2 },
+      { date: "T5", revenue: 1_200_000, orders: 5 },
+      { date: "T6", revenue: 900_000, orders: 4 },
+      { date: "T7", revenue: 700_000, orders: 3 },
+      { date: "CN", revenue: 1_500_000, orders: 5 },
+    ],
+    "30days": [
+      { date: "Tuần 1", revenue: 2_000_000, orders: 6 },
+      { date: "Tuần 2", revenue: 1_800_000, orders: 5 },
+      { date: "Tuần 3", revenue: 2_400_000, orders: 7 },
+      { date: "Tuần 4", revenue: 1_900_000, orders: 5 },
+    ],
+    "90days": [
+      { date: "Tháng 1", revenue: 5_500_000, orders: 8 },
+      { date: "Tháng 2", revenue: 4_800_000, orders: 7 },
+      { date: "Tháng 3", revenue: 6_200_000, orders: 8 },
+    ],
+  }
 
-    fetchPayments()
-  }, [])
-
-  // Process payments into chart data based on period
-  const chartData = useMemo((): ChartDataPoint[] => {
-    if (payments.length === 0) return []
-
-    const now = new Date()
-    let daysBack: number
-    let groupBy: "day" | "week" | "month"
-
-    switch (period) {
-      case "7days":
-        daysBack = 7
-        groupBy = "day"
-        break
-      case "30days":
-        daysBack = 30
-        groupBy = "week"
-        break
-      case "90days":
-        daysBack = 90
-        groupBy = "month"
-        break
-      default:
-        daysBack = 7
-        groupBy = "day"
-    }
-
-    const startDate = new Date(now)
-    startDate.setDate(startDate.getDate() - daysBack)
-
-    // Filter payments within the period
-    const filteredPayments = payments.filter((p) => {
-      const paymentDate = new Date(p.paymentDate || p.createdAt || "")
-      return paymentDate >= startDate && paymentDate <= now
-    })
-
-    // Group payments
-    const groups: Record<string, { revenue: number; orders: number }> = {}
-
-    if (groupBy === "day") {
-      // Last 7 days
-      const dayNames = ["CN", "T2", "T3", "T4", "T5", "T6", "T7"]
-      for (let i = 6; i >= 0; i--) {
-        const d = new Date(now)
-        d.setDate(d.getDate() - i)
-        const key = d.toISOString().split("T")[0]
-        const dayName = dayNames[d.getDay()]
-        groups[key] = { revenue: 0, orders: 0 }
-        // Store dayName for display
-        ;(
-          groups[key] as { revenue: number; orders: number; label?: string }
-        ).label = dayName
-      }
-
-      filteredPayments.forEach((p) => {
-        const paymentDate = new Date(p.paymentDate || p.createdAt || "")
-        const key = paymentDate.toISOString().split("T")[0]
-        if (groups[key]) {
-          groups[key].revenue += p.amount || 0
-          groups[key].orders += 1
-        }
-      })
-
-      return Object.entries(groups).map(([, value]) => ({
-        date: (value as { label?: string }).label || "",
-        revenue: value.revenue,
-        orders: value.orders,
-      }))
-    } else if (groupBy === "week") {
-      // Last 4 weeks
-      for (let i = 3; i >= 0; i--) {
-        const weekLabel = `Tuần ${4 - i}`
-        groups[weekLabel] = { revenue: 0, orders: 0 }
-      }
-
-      filteredPayments.forEach((p) => {
-        const paymentDate = new Date(p.paymentDate || p.createdAt || "")
-        const daysDiff = Math.floor(
-          (now.getTime() - paymentDate.getTime()) / (1000 * 60 * 60 * 24)
-        )
-        const weekIndex = Math.min(3, Math.floor(daysDiff / 7))
-        const weekLabel = `Tuần ${4 - weekIndex}`
-        if (groups[weekLabel]) {
-          groups[weekLabel].revenue += p.amount || 0
-          groups[weekLabel].orders += 1
-        }
-      })
-
-      return Object.entries(groups).map(([key, value]) => ({
-        date: key,
-        revenue: value.revenue,
-        orders: value.orders,
-      }))
-    } else {
-      // Last 3 months
-      for (let i = 2; i >= 0; i--) {
-        const d = new Date(now)
-        d.setMonth(d.getMonth() - i)
-        const monthLabel = `Tháng ${d.getMonth() + 1}`
-        groups[monthLabel] = { revenue: 0, orders: 0 }
-      }
-
-      filteredPayments.forEach((p) => {
-        const paymentDate = new Date(p.paymentDate || p.createdAt || "")
-        const monthLabel = `Tháng ${paymentDate.getMonth() + 1}`
-        if (groups[monthLabel]) {
-          groups[monthLabel].revenue += p.amount || 0
-          groups[monthLabel].orders += 1
-        }
-      })
-
-      return Object.entries(groups).map(([key, value]) => ({
-        date: key,
-        revenue: value.revenue,
-        orders: value.orders,
-      }))
-    }
-  }, [payments, period])
+  const chartData = useMemo((): ChartDataPoint[] => MOCK_DATA[period], [period])
 
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat("vi-VN", {
